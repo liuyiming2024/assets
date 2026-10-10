@@ -13,6 +13,8 @@ API = 'https://api.github.com'
 
 
 def api(method, path, tok, body=None):
+    """⚠ DELETE 返回 204，响应体是空的 —— 无条件 json.load 会直接抛
+    JSONDecodeError，把整个发布流程打断。空体必须单独处理。"""
     data = json.dumps(body).encode() if body else None
     req = urllib.request.Request(API + path, method=method, data=data, headers={
         'Authorization': 'Bearer ' + tok,
@@ -20,7 +22,11 @@ def api(method, path, tok, body=None):
         'User-Agent': 'assets-publish'
     })
     try:
-        return json.load(urllib.request.urlopen(req, timeout=60))
+        with urllib.request.urlopen(req, timeout=60) as r:
+            raw = r.read()
+        if not raw:
+            return {'ok': True}          # 204 No Content
+        return json.loads(raw)
     except urllib.error.HTTPError as e:
         return {'_err': e.code, '_body': e.read().decode()[:300]}
 

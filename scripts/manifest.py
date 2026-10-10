@@ -22,6 +22,11 @@ def main():
     items = []
     if os.path.exists(meta_p):
         items = json.load(open(meta_p, encoding='utf-8'))
+    # 抓不到的不该出现在清单里 —— 清单写着"可下载"，点下去却是 404，
+    # 比没有这一项更糟。用 dist 里的真实文件再过滤一道。
+    items = [it for it in items
+             if os.path.exists(os.path.join(dist, it['name']))
+             and os.path.getsize(os.path.join(dist, it['name'])) == it['size']]
 
     base = 'https://github.com/%s/releases/latest/download/' % repo
     for it in items:

@@ -20,9 +20,12 @@ RESOURCES = {
          'license': 'MIT', 'desc': 'sql.js 的 JS 包装'},
     ],
     'lua': [
-        {'name': 'wasmley.wasm',
-         'url': 'https://cdn.jsdelivr.net/npm/wasmley@latest/dist/lua.wasm',
-         'license': 'MIT', 'desc': '官方 PUC-Rio Lua 5.4 编译到 WASM，约 200KB'},
+        # 主选 Fengari（Lua VM 的 JS 实现，jsdelivr 上路径稳定）。
+        # 之前用 wasmley@latest/dist/lua.wasm —— 那个路径在包里根本不存在，
+        # 抓下来是 404 页面，被 <1024 字节的校验挡掉，结果 lua 一项空着。
+        {'name': 'fengari-web.js',
+         'url': 'https://cdn.jsdelivr.net/npm/fengari-web@0.2.1/dist/fengari-web.js',
+         'license': 'MIT', 'desc': 'Fengari：Lua VM 的 JS 实现，约 200KB'},
     ],
     'quickjs': [
         {'name': 'quickjs.wasm',
@@ -62,15 +65,25 @@ RESOURCES = {
 ORDER = ['sqljs', 'lua', 'quickjs', 'pyodide', 'ruby', 'php']
 
 
-def grab(item, out_dir):
+def grab(item, out_dir, tries=3):
+    """大文件（pyodide.wasm 十几 MB）一次抓不下来很常见 ——
+    直接判失败等于放弃，所以给三次机会。"""
     path = os.path.join(out_dir, item['name'])
     os.makedirs(out_dir, exist_ok=True)
-    try:
-        req = urllib.request.Request(item['url'], headers={'User-Agent': 'assets-fetch'})
-        with urllib.request.urlopen(req, timeout=180) as r:
-            data = r.read()
-    except Exception as e:
-        print('  ✗ %s → %s' % (item['name'], e))
+    data = None
+    last = ''
+    for n in range(tries):
+        try:
+            req = urllib.request.Request(item['url'], headers={'User-Agent': 'assets-fetch'})
+            with urllib.request.urlopen(req, timeout=300) as r:
+                data = r.read()
+            break
+        except Exception as e:
+            last = str(e)[:120]
+            if n < tries - 1:
+                print('    · 第 %d 次失败（%s），重试' % (n + 1, last))
+    if data is None:
+        print('  ✗ %s → %s' % (item['name'], last))
         return None
     # 基本校验：太小说明拿到的是错误页或重定向页
     if len(data) < 1024:
