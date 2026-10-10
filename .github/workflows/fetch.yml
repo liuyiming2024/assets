@@ -43,6 +43,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET: ${{ github.event.inputs.target }}
         run: |
+          mkdir -p dist
           python3 scripts/fetch.py --target "$TARGET" --out dist 2>&1 | tee dist/_fetch.log
           exit ${PIPESTATUS[0]}
 
@@ -54,6 +55,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.event.inputs.tag }}
         run: |
+          mkdir -p dist
           python3 scripts/publish.py --repo "${{ github.repository }}" --dir dist --tag "$TAG" 2>&1 | tee dist/_publish.log
           exit ${PIPESTATUS[0]}
 
