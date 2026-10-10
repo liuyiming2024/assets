@@ -40,7 +40,9 @@ RESOURCES = {
     ],
     'php': [
         {'name': 'php-web.mjs',
-         'url': 'https://cdn.jsdelivr.net/npm/php-wasm/PhpWeb.mjs',
+         'url': ['https://cdn.jsdelivr.net/npm/php-wasm/PhpWeb.mjs',
+                 'https://unpkg.com/php-wasm/PhpWeb.mjs',
+                 'https://cdn.jsdelivr.net/npm/php-wasm@0.0.8/PhpWeb.mjs'],
          'license': 'Apache-2.0', 'desc': 'PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）'},
         {'name': 'php-web.mjs.wasm',
          'url': 'https://cdn.jsdelivr.net/npm/php-wasm/php-web.mjs.wasm',
@@ -58,9 +60,13 @@ RESOURCES = {
         {'name': 'pyodide.js',
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js',
          'license': 'MPL-2.0', 'desc': 'CPython 编译到 WASM 的加载器'},
+        # 这是 Python 的核心 —— 没有它 pyodide.js 一个字也跑不起来。
+        # 前两个候选都失败过，所以列了更多源。大文件在 CDN 上不稳定是常态。
         {'name': 'pyodide.wasm',
          'url': ['https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.wasm',
-                 'https://pyodide-cdn2.iodide.io/v0.26.2/full/pyodide.wasm'],
+                 'https://cdn.jsdelivr.net/npm/pyodide@0.26.2/pyodide.wasm',
+                 'https://cdn.jsdelivr.net/gh/pyodide/pyodide@v0.26.2/dist/pyodide.wasm',
+                 'https://unpkg.com/pyodide@0.26.2/pyodide.wasm'],
          'license': 'MPL-2.0', 'desc': 'CPython 核心，约 6-12 MB'},
         {'name': 'python_stdlib.zip',
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip',
