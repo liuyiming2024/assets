@@ -1,0 +1,99 @@
+{
+  "updated": "2026-10-10",
+  "note": [
+    "按需加载的 WASM 运行时。主仓库保持零依赖，",
+    "这些只在用户主动要用某个语言时才下载。",
+    "下载后请自行缓存（Cache Storage / IndexedDB），之后离线也能用。"
+  ],
+  "usage": "首次需要联网；缓存后离线可用。加载请放 Web Worker，否则会白屏好几秒。",
+  "files": [
+    {
+      "name": "sql-wasm.wasm",
+      "size": 659806,
+      "sha256": "0734155c83e493983d1f2ff5b09a4fab6e35a32e9449c7e4e545756439f62d73",
+      "license": "MIT",
+      "desc": "SQLite 编译到 WASM，完整 SQL 引擎",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sql-wasm.wasm"
+    },
+    {
+      "name": "sql-wasm.js",
+      "size": 48788,
+      "sha256": "694ca5b36aa3e6e71f417819d7df390b65343665fcfa5c69015ca33d93d291b3",
+      "license": "MIT",
+      "desc": "sql.js 的 JS 包装",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sql-wasm.js"
+    },
+    {
+      "name": "lua.wasm",
+      "size": 1255815,
+      "sha256": "d97c1a48364c4b4d4d391d4e2a7cbb43f5c1439e36aaeed7b43bcb58f8beb4f4",
+      "license": "MIT",
+      "desc": "Wasmley：官方 PUC-Rio Lua 5.4 编译到 WASM，约 630KB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.wasm"
+    },
+    {
+      "name": "lua.js",
+      "size": 213536,
+      "sha256": "6b2d4e3a313352109ab8f4795f0c6ad0a1b9267e378512b1382d62025b358d47",
+      "license": "MIT",
+      "desc": "Wasmley 的 JS 胶水代码，约 142KB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.js"
+    },
+    {
+      "name": "quickjs.wasm",
+      "size": 503134,
+      "sha256": "105c3bed22d457e43e3d1c3c1c6959fda62a8fe06f0fc8a985303c3a2be72232",
+      "license": "MIT",
+      "desc": "QuickJS ES2025 引擎，约 500KB，用于隔离沙箱",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/quickjs.wasm"
+    },
+    {
+      "name": "pyodide.js",
+      "size": 14767,
+      "sha256": "037907919d58ac79dbee2eee57e96507b79fad58260ab847dc6200443915c20f",
+      "license": "MPL-2.0",
+      "desc": "CPython 编译到 WASM 的加载器",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/pyodide.js"
+    },
+    {
+      "name": "pyodide.asm.wasm",
+      "size": 10087885,
+      "sha256": "8f631d8453672664131b2d4c9c41f3adf5d32e9efda2cb421d3fdf38cab57a21",
+      "license": "MPL-2.0",
+      "desc": "CPython 核心（文件名是 asm.wasm，不是 pyodide.wasm）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/pyodide.asm.wasm"
+    },
+    {
+      "name": "python_stdlib.zip",
+      "size": 2341761,
+      "sha256": "0dd443755a0244ae3052f2e0834413d68c43f362c651edd47b785ea9d26e4853",
+      "license": "MPL-2.0",
+      "desc": "Python 标准库",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/python_stdlib.zip"
+    },
+    {
+      "name": "ruby+stdlib.wasm",
+      "size": 35204534,
+      "sha256": "1d8aea2daa127d73306615e08bbaae55c4af6fee036b0ecfe9720e04591db01e",
+      "license": "MIT",
+      "desc": "CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/ruby+stdlib.wasm"
+    },
+    {
+      "name": "php-web.mjs",
+      "size": 4258,
+      "sha256": "57ca4eb5fac94a43be2c1fd5b93d9445c485ab5044e3446befd62845b2ba467e",
+      "license": "Apache-2.0",
+      "desc": "PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/php-web.mjs"
+    },
+    {
+      "name": "php-web.mjs.wasm",
+      "size": 17289452,
+      "sha256": "e4f660ed9a02880114a38e686236b3ab07f7ac8c35cb1a81d4efd36dc11d3f18",
+      "license": "Apache-2.0",
+      "desc": "php-wasm 运行时本体，约 16 MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/php-web.mjs.wasm"
+    }
+  ]
+}
