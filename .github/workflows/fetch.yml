@@ -36,11 +36,15 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # 输出 tee 进 dist/_fetch.log —— 抓不到某个资源时，
+      # 只有这个文件能告诉我失败原因，否则只能靠猜。
       - name: 抓取资源
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET: ${{ github.event.inputs.target }}
-        run: python3 scripts/fetch.py --target "$TARGET" --out dist
+        run: |
+          python3 scripts/fetch.py --target "$TARGET" --out dist 2>&1 | tee dist/_fetch.log
+          exit ${PIPESTATUS[0]}
 
       # 输出同时写进 dist/_publish.log —— Actions 日志正文我读不到，
       # 只能靠 diag 把它推回仓库。失败信息不落地的话，就只能靠猜。

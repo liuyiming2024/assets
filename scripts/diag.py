@@ -48,6 +48,12 @@ try:
 except Exception as e:
     lines.append('(无: %s)' % e)
 lines.append('')
+lines.append('--- 抓取日志 _fetch.log ---')
+try:
+    lines.append(open(DIST + '/_fetch.log', encoding='utf-8').read())
+except Exception as e:
+    lines.append('(无: %s)' % e)
+lines.append('')
 lines.append('--- 发布日志 _publish.log ---')
 try:
     lines.append(open(DIST + '/_publish.log', encoding='utf-8').read())
