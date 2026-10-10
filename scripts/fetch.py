@@ -20,12 +20,18 @@ RESOURCES = {
          'license': 'MIT', 'desc': 'sql.js 的 JS 包装'},
     ],
     'lua': [
-        # 主选 Fengari（Lua VM 的 JS 实现，jsdelivr 上路径稳定）。
-        # 之前用 wasmley@latest/dist/lua.wasm —— 那个路径在包里根本不存在，
-        # 抓下来是 404 页面，被 <1024 字节的校验挡掉，结果 lua 一项空着。
-        {'name': 'fengari-web.js',
-         'url': 'https://cdn.jsdelivr.net/npm/fengari-web@0.2.1/dist/fengari-web.js',
-         'license': 'MIT', 'desc': 'Fengari：Lua VM 的 JS 实现，约 200KB'},
+        # 多候选：npm 包内的实际路径会随版本变，写死一个就等于赌。
+        # 依次试，哪个通就用哪个 —— 比事后猜路径省事得多。
+        {'name': 'lua.wasm',
+         'url': ['https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm',
+                 'https://cdn.jsdelivr.net/npm/wasmley/lua.wasm',
+                 'https://unpkg.com/wasmley/dist/lua.wasm'],
+         'license': 'MIT', 'desc': 'Wasmley：官方 PUC-Rio Lua 5.4 编译到 WASM，约 630KB'},
+        {'name': 'lua.js',
+         'url': ['https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js',
+                 'https://cdn.jsdelivr.net/npm/wasmley/lua.js',
+                 'https://unpkg.com/wasmley/dist/lua.js'],
+         'license': 'MIT', 'desc': 'Wasmley 的 JS 胶水代码，约 142KB'},
     ],
     'quickjs': [
         {'name': 'quickjs.wasm',
@@ -53,7 +59,8 @@ RESOURCES = {
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js',
          'license': 'MPL-2.0', 'desc': 'CPython 编译到 WASM 的加载器'},
         {'name': 'pyodide.wasm',
-         'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.wasm',
+         'url': ['https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.wasm',
+                 'https://pyodide-cdn2.iodide.io/v0.26.2/full/pyodide.wasm'],
          'license': 'MPL-2.0', 'desc': 'CPython 核心，约 6-12 MB'},
         {'name': 'python_stdlib.zip',
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip',
@@ -70,20 +77,24 @@ def grab(item, out_dir, tries=3):
     直接判失败等于放弃，所以给三次机会。"""
     path = os.path.join(out_dir, item['name'])
     os.makedirs(out_dir, exist_ok=True)
+    urls = item['url'] if isinstance(item['url'], list) else [item['url']]
     data = None
     last = ''
-    for n in range(tries):
-        try:
-            req = urllib.request.Request(item['url'], headers={'User-Agent': 'assets-fetch'})
-            with urllib.request.urlopen(req, timeout=300) as r:
-                data = r.read()
+    for u in urls:
+        for n in range(tries):
+            try:
+                req = urllib.request.Request(u, headers={'User-Agent': 'assets-fetch'})
+                with urllib.request.urlopen(req, timeout=300) as r:
+                    data = r.read()
+                break
+            except Exception as e:
+                last = str(e)[:120]
+                if n < tries - 1:
+                    print('    · %s 第 %d 次失败，重试' % (u, n + 1))
+        if data is not None:
             break
-        except Exception as e:
-            last = str(e)[:120]
-            if n < tries - 1:
-                print('    · 第 %d 次失败（%s），重试' % (n + 1, last))
     if data is None:
-        print('  ✗ %s → %s' % (item['name'], last))
+        print('  ✗ %s → %s（已试 %d 个地址）' % (item['name'], last, len(urls)))
         return None
     # 基本校验：太小说明拿到的是错误页或重定向页
     if len(data) < 1024:

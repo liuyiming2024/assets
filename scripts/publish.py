@@ -46,8 +46,18 @@ def main():
         print('缺少 GH_TOKEN 或 --repo')
         return 1
 
-    meta_p = os.path.join(dist, '_fetched.json')
-    files = [f for f in os.listdir(dist) if f != '_fetched.json' and os.path.isfile(os.path.join(dist, f))]
+    # 只发真正的资源。下划线开头的是诊断产物（_fetched.json / _publish.log），
+    # 不是运行时 —— 而且 _publish.log 此刻还是 0 字节（tee 的管道没结束），
+    # GitHub 会拒绝空文件（size must be greater than or equal to 1）。
+    files = []
+    for f in sorted(os.listdir(dist)):
+        if f.startswith('_'):
+            continue
+        p = os.path.join(dist, f)
+        if os.path.isfile(p) and os.path.getsize(p) > 0:
+            files.append(f)
+        elif os.path.isfile(p):
+            print('  跳过空文件 %s' % f)
     if not files:
         print('dist/ 是空的，没什么可发')
         return 0
