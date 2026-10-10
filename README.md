@@ -37,10 +37,19 @@ Actions → 「抓取运行时资源」→ 选目标 → 运行。
 
 | 资源 | 体积 | 许可证 | 说明 |
 | --- | --- | --- | --- |
-| sql-wasm | ~1.5 MB | MIT | 完整 SQLite 引擎 |
-| wasmley | ~200 KB | MIT | 官方 Lua 5.4 |
-| quickjs | ~500 KB | MIT | ES2025 引擎，用于隔离沙箱 |
-| pyodide | 6–12 MB | MPL-2.0 | 完整 CPython |
+| php-web.mjs | 0.0 MB | Apache-2.0 | PHP 运行时加载器 |
+| pyodide.js | 0.0 MB | MPL-2.0 | Pyodide 加载器 |
+| sql-wasm.js | 0.0 MB | MIT | sql.js 的 JS 包装 |
+| lua.js | 0.2 MB | MIT | Wasmley 胶水代码 |
+| quickjs.wasm | 0.5 MB | MIT | ES2025 引擎，用于隔离沙箱 |
+| sql-wasm.wasm | 0.6 MB | MIT | 完整 SQLite 引擎 |
+| lua.wasm | 1.2 MB | MIT | 官方 PUC-Rio Lua 5.4 |
+| python_stdlib.zip | 2.2 MB | MPL-2.0 | Python 标准库 |
+| **pyodide.asm.wasm** | **9.6 MB** | MPL-2.0 | **CPython 核心** |
+| php-web.mjs.wasm | 16.5 MB | Apache-2.0 | Zend 引擎本体 |
+| ruby+stdlib.wasm | 33.6 MB | MIT | CRuby 3.3 + 标准库 |
+
+合计 **64.5 MB**，11 个文件，全部已发布。
 
 详细的运行时资料（含各语言对比与接入顺序）在
 https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
@@ -56,3 +65,20 @@ https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
 这些资源都是开源项目，用的是宽松许可证（MIT / MPL-2.0 / Apache-2.0）。
 **版权从来不是障碍** —— 唯一的约束是主仓库自己定的「零依赖」。
 使用时保留各自的版权声明即可。
+
+
+## 抓资源时的三个坑（都踩过）
+
+1. **文件名猜错，重试再多次也没用。**
+   Pyodide 的核心叫 `pyodide.asm.wasm`，不是 `pyodide.wasm` ——
+   四个候选全 404 才暴露这点。
+
+2. **不钉版本号会拿到错误页。**
+   `php-wasm/PhpWeb.mjs` 返回 996 字节的 HTML。
+   必须写 `php-wasm@0.0.8/PhpWeb.mjs`。
+
+3. **管道里的 tee 不会自己建目录。**
+   `python3 ... | tee dist/x.log` 在 `dist` 不存在时直接失败，
+   而且失败得很隐蔽 —— 先 `mkdir -p dist`。
+
+所以：每个资源配**多个候选地址**，抓完校验**大小**（小于 1KB 视为错误页）。
