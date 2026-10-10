@@ -42,48 +42,29 @@ jobs:
           TARGET: ${{ github.event.inputs.target }}
         run: python3 scripts/fetch.py --target "$TARGET" --out dist
 
+      # 输出同时写进 dist/_publish.log —— Actions 日志正文我读不到，
+      # 只能靠 diag 把它推回仓库。失败信息不落地的话，就只能靠猜。
       - name: 发布为 Release 资产
+        id: publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.event.inputs.tag }}
-        run: python3 scripts/publish.py --repo "${{ github.repository }}" --dir dist --tag "$TAG"
+        run: |
+          python3 scripts/publish.py --repo "${{ github.repository }}" --dir dist --tag "$TAG" 2>&1 | tee dist/_publish.log
+          exit ${PIPESTATUS[0]}
 
       - name: 更新清单
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/manifest.py --repo "${{ github.repository }}" --dir dist
 
-      # 日志写回：沙箱下载不到 Actions 的产物，只能把关键输出
-      # 写成文件推回仓库再读。诊断步骤永远不影响 job 结论。
+      # 日志写回：沙箱下载不到 Actions 的产物，只能把关键输出写成文件推回仓库。
+      # 用独立脚本而不是内联 heredoc —— 嵌套缩进稍错就静默不执行。
+      # 诊断步骤永远不影响 job 结论。
       - name: 日志写回
         if: always()
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          {
-            echo "run: ${{ github.run_id }} / target: ${{ github.event.inputs.target }}"
-            echo "--- dist 内容 ---"
-            ls -la dist 2>/dev/null || echo "(dist 不存在)"
-            echo "--- _fetched.json ---"
-            cat dist/_fetched.json 2>/dev/null || echo "(无)"
-            echo "--- manifest.json ---"
-            cat manifest.json 2>/dev/null || echo "(无)"
-          } > _log.txt 2>&1
-          python3 - <<'PY'
-          import os, json, base64, urllib.request
-          tok = os.environ['GH_TOKEN']; repo = os.environ['GITHUB_REPOSITORY']
-          path = '_log.txt'
-          body = open(path, 'rb').read()
-          def api(m, p, b=None):
-              r = urllib.request.Request('https://api.github.com/repos/%s/contents/%s' % (repo, p),
-                  method=m, headers={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json',
-                  'User-Agent':'diag'}, data=json.dumps(b).encode() if b else None)
-              return json.load(urllib.request.urlopen(r, timeout=30))
-          try:
-              cur = api('GET', path); sha = cur['sha']
-              api('PUT', path, {'message':'更新抓取日志','content':base64.b64encode(body).decode(),'sha':sha})
-          except Exception:
-              api('PUT', path, {'message':'写入抓取日志','content':base64.b64encode(body).decode()})
-          print('日志已写回')
-          PY
+          TARGET: ${{ github.event.inputs.target }}
+        run: python3 scripts/diag.py dist

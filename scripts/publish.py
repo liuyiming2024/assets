@@ -49,6 +49,7 @@ def main():
     # 找到或创建 Release。固定 tag → 重跑不会撞「tag 已存在」
     rel = api('GET', '/repos/%s/releases/tags/%s' % (repo, tag), tok)
     if '_err' in rel:
+        print('  取 Release 失败：%s（将尝试创建）' % rel.get('_body', rel.get('_err'))[:200])
         rel = api('POST', '/repos/%s/releases' % repo, tok, {
             'tag_name': tag, 'name': '运行时资源（%s）' % tag,
             'body': '按需加载的 WASM 运行时。主仓库保持零依赖，这些只在用户主动要用时才下载。',
@@ -82,6 +83,8 @@ def main():
             urllib.request.urlopen(req, timeout=600)
             print('  ✓ %s  %.1f MB' % (f, size / 1048576))
             ok_n += 1
+        except urllib.error.HTTPError as e:
+            print('  ✗ %s → HTTP %s %s' % (f, e.code, e.read().decode('utf-8', 'replace')[:400]))
         except Exception as e:
             print('  ✗ %s → %s' % (f, e))
 
