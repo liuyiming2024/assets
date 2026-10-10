@@ -39,10 +39,11 @@ RESOURCES = {
          'license': 'MIT', 'desc': 'QuickJS ES2025 引擎，约 500KB，用于隔离沙箱'},
     ],
     'php': [
+        # 不钉版本时 jsdelivr 返回 996 字节的错误页（不是真文件）。
+        # 这也是为什么"小于 1KB 视为失败"那条校验值得留着。
         {'name': 'php-web.mjs',
-         'url': ['https://cdn.jsdelivr.net/npm/php-wasm/PhpWeb.mjs',
-                 'https://unpkg.com/php-wasm/PhpWeb.mjs',
-                 'https://cdn.jsdelivr.net/npm/php-wasm@0.0.8/PhpWeb.mjs'],
+         'url': ['https://cdn.jsdelivr.net/npm/php-wasm@0.0.8/PhpWeb.mjs',
+                 'https://unpkg.com/php-wasm@0.0.8/PhpWeb.mjs'],
          'license': 'Apache-2.0', 'desc': 'PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）'},
         {'name': 'php-web.mjs.wasm',
          'url': 'https://cdn.jsdelivr.net/npm/php-wasm/php-web.mjs.wasm',
@@ -53,7 +54,8 @@ RESOURCES = {
          'url': 'https://cdn.jsdelivr.net/npm/@ruby/3.3-wasm-wasi@2.4.1/dist/ruby+stdlib.wasm',
          'license': 'MIT', 'desc': 'CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB'},
         {'name': 'browser.script.iife.js',
-         'url': 'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js',
+         'url': ['https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser/script.iife.js',
+                 'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js'],
          'license': 'MIT', 'desc': 'ruby.wasm 的浏览器直接可用脚本'},
     ],
     'pyodide': [
@@ -62,12 +64,13 @@ RESOURCES = {
          'license': 'MPL-2.0', 'desc': 'CPython 编译到 WASM 的加载器'},
         # 这是 Python 的核心 —— 没有它 pyodide.js 一个字也跑不起来。
         # 前两个候选都失败过，所以列了更多源。大文件在 CDN 上不稳定是常态。
-        {'name': 'pyodide.wasm',
-         'url': ['https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.wasm',
-                 'https://cdn.jsdelivr.net/npm/pyodide@0.26.2/pyodide.wasm',
-                 'https://cdn.jsdelivr.net/gh/pyodide/pyodide@v0.26.2/dist/pyodide.wasm',
-                 'https://unpkg.com/pyodide@0.26.2/pyodide.wasm'],
-         'license': 'MPL-2.0', 'desc': 'CPython 核心，约 6-12 MB'},
+        # 核心文件的名字是 pyodide.asm.wasm，不是 pyodide.wasm ——
+        # 四个候选全 404 才暴露这点。名字猜错时，重试再多次也没用。
+        {'name': 'pyodide.asm.wasm',
+         'url': ['https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.asm.wasm',
+                 'https://cdn.jsdelivr.net/npm/pyodide@0.26.2/pyodide.asm.wasm',
+                 'https://unpkg.com/pyodide@0.26.2/pyodide.asm.wasm'],
+         'license': 'MPL-2.0', 'desc': 'CPython 核心（文件名是 asm.wasm，不是 pyodide.wasm）'},
         {'name': 'python_stdlib.zip',
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip',
          'license': 'MPL-2.0', 'desc': 'Python 标准库'},
