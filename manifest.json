@@ -1,0 +1,27 @@
+{
+  "updated": "2026-10-10",
+  "note": [
+    "按需加载的 WASM 运行时。主仓库保持零依赖，",
+    "这些只在用户主动要用某个语言时才下载。",
+    "下载后请自行缓存（Cache Storage / IndexedDB），之后离线也能用。"
+  ],
+  "usage": "首次需要联网；缓存后离线可用。加载请放 Web Worker，否则会白屏好几秒。",
+  "files": [
+    {
+      "name": "sql-wasm.wasm",
+      "size": 1500000,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "license": "MIT",
+      "desc": "SQLite",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sql-wasm.wasm"
+    },
+    {
+      "name": "lua.wasm",
+      "size": 200000,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "license": "MIT",
+      "desc": "Lua 5.4",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.wasm"
+    }
+  ]
+}

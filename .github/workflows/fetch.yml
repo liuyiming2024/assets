@@ -1,0 +1,54 @@
+# 抓取大体积运行时资源。
+#
+# 为什么不直接提交进仓库：
+#   git 存二进制是"只增不减" —— 放进去一次，clone 就再也快不起来了。
+#   Release 资产不影响 clone：只有真要用的人才会下载那一个文件。
+#
+# 为什么不放在主仓库：
+#   主仓库的约束是"零依赖、拿到就能跑"。这些是按需加载的可选资源，
+#   混进去会破坏那条约束。
+#
+# 为什么必须由 Actions 抓：
+#   沙箱环境的出站请求被网络策略挡住（实测 502 / 403），拿不到 CDN。
+#   Actions 的出站是通的。这是环境差异，不是配置问题。
+
+name: 抓取运行时资源
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: '要抓哪个'
+        required: true
+        default: 'all'
+        type: choice
+        options: [all, sqljs, lua, quickjs, pyodide]
+      tag:
+        description: 'Release 标签（默认 latest）'
+        required: false
+        default: 'latest'
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: 抓取资源
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET: ${{ github.event.inputs.target }}
+        run: python3 scripts/fetch.py --target "$TARGET" --out dist
+
+      - name: 发布为 Release 资产
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.inputs.tag }}
+        run: python3 scripts/publish.py --repo "${{ github.repository }}" --dir dist --tag "$TAG"
+
+      - name: 更新清单
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/manifest.py --repo "${{ github.repository }}" --dir dist
