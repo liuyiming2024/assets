@@ -69,6 +69,19 @@ except Exception as e:
 content = '\n'.join(lines)
 path = '_log.txt'
 
+# 顺手把 manifest.json 也推回来 —— 它只在 Actions 里生成，
+# 不写回仓库的话外部永远读不到，等于白生成。
+try:
+    mj = open('manifest.json', encoding='utf-8').read()
+    cur = api('GET', 'manifest.json')
+    b = {'message': '更新资源清单', 'content': base64.b64encode(mj.encode()).decode()}
+    if isinstance(cur, dict) and cur.get('sha'):
+        b['sha'] = cur['sha']
+    r = api('PUT', 'manifest.json', b)
+    print('manifest.json 已写回' if not r.get('_err') else 'manifest 写回失败：%s' % r['_err'])
+except Exception as e:
+    print('manifest.json 不存在或写回失败：%s' % e)
+
 cur = api('GET', path)
 body = {'message': '更新抓取日志', 'content': base64.b64encode(content.encode()).decode()}
 if isinstance(cur, dict) and cur.get('sha'):
