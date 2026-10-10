@@ -22,7 +22,7 @@ on:
         required: true
         default: 'all'
         type: choice
-        options: [all, sqljs, lua, quickjs, pyodide]
+        options: [all, sqljs, lua, quickjs, pyodide, ruby, php]
       tag:
         description: 'Release 标签（默认 latest）'
         required: false
@@ -52,3 +52,38 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/manifest.py --repo "${{ github.repository }}" --dir dist
+
+      # 日志写回：沙箱下载不到 Actions 的产物，只能把关键输出
+      # 写成文件推回仓库再读。诊断步骤永远不影响 job 结论。
+      - name: 日志写回
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "run: ${{ github.run_id }} / target: ${{ github.event.inputs.target }}"
+            echo "--- dist 内容 ---"
+            ls -la dist 2>/dev/null || echo "(dist 不存在)"
+            echo "--- _fetched.json ---"
+            cat dist/_fetched.json 2>/dev/null || echo "(无)"
+            echo "--- manifest.json ---"
+            cat manifest.json 2>/dev/null || echo "(无)"
+          } > _log.txt 2>&1
+          python3 - <<'PY'
+          import os, json, base64, urllib.request
+          tok = os.environ['GH_TOKEN']; repo = os.environ['GITHUB_REPOSITORY']
+          path = '_log.txt'
+          body = open(path, 'rb').read()
+          def api(m, p, b=None):
+              r = urllib.request.Request('https://api.github.com/repos/%s/contents/%s' % (repo, p),
+                  method=m, headers={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json',
+                  'User-Agent':'diag'}, data=json.dumps(b).encode() if b else None)
+              return json.load(urllib.request.urlopen(r, timeout=30))
+          try:
+              cur = api('GET', path); sha = cur['sha']
+              api('PUT', path, {'message':'更新抓取日志','content':base64.b64encode(body).decode(),'sha':sha})
+          except Exception:
+              api('PUT', path, {'message':'写入抓取日志','content':base64.b64encode(body).decode()})
+          print('日志已写回')
+          PY

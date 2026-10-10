@@ -29,6 +29,22 @@ RESOURCES = {
          'url': 'https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/emscripten-module.wasm',
          'license': 'MIT', 'desc': 'QuickJS ES2025 引擎，约 500KB，用于隔离沙箱'},
     ],
+    'php': [
+        {'name': 'php-web.mjs',
+         'url': 'https://cdn.jsdelivr.net/npm/php-wasm/PhpWeb.mjs',
+         'license': 'Apache-2.0', 'desc': 'PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）'},
+        {'name': 'php-web.mjs.wasm',
+         'url': 'https://cdn.jsdelivr.net/npm/php-wasm/php-web.mjs.wasm',
+         'license': 'Apache-2.0', 'desc': 'php-wasm 运行时本体，约 16 MB'},
+    ],
+    'ruby': [
+        {'name': 'ruby+stdlib.wasm',
+         'url': 'https://cdn.jsdelivr.net/npm/@ruby/3.3-wasm-wasi@2.4.1/dist/ruby+stdlib.wasm',
+         'license': 'MIT', 'desc': 'CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB'},
+        {'name': 'browser.script.iife.js',
+         'url': 'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js',
+         'license': 'MIT', 'desc': 'ruby.wasm 的浏览器直接可用脚本'},
+    ],
     'pyodide': [
         {'name': 'pyodide.js',
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js',
@@ -42,7 +58,8 @@ RESOURCES = {
     ],
 }
 
-ORDER = ['sqljs', 'lua', 'quickjs', 'pyodide']  # 体积从小到大
+# 体积从小到大。大的放后面 —— 抓一次很久，别让它堵住其他的。
+ORDER = ['sqljs', 'lua', 'quickjs', 'pyodide', 'ruby', 'php']
 
 
 def grab(item, out_dir):
