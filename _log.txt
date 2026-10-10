@@ -1,0 +1,99 @@
+run: 38060882820 / target: all
+--- dist 内容 ---
+total 54772
+drwxr-xr-x 2 runner runner     4096 Oct 10 14:45 .
+drwxr-xr-x 6 runner runner     4096 Oct 10 14:45 ..
+-rw-r--r-- 1 runner runner     2103 Oct 10 14:45 _fetched.json
+-rw-r--r-- 1 runner runner 17289452 Oct 10 14:45 php-web.mjs.wasm
+-rw-r--r-- 1 runner runner    14767 Oct 10 14:45 pyodide.js
+-rw-r--r-- 1 runner runner  2341761 Oct 10 14:45 python_stdlib.zip
+-rw-r--r-- 1 runner runner   503134 Oct 10 14:45 quickjs.wasm
+-rw-r--r-- 1 runner runner 35204534 Oct 10 14:45 ruby+stdlib.wasm
+-rw-r--r-- 1 runner runner    48788 Oct 10 14:45 sql-wasm.js
+-rw-r--r-- 1 runner runner   659806 Oct 10 14:45 sql-wasm.wasm
+--- _fetched.json ---
+[
+  {
+    "name": "sql-wasm.wasm",
+    "size": 659806,
+    "sha256": "0734155c83e493983d1f2ff5b09a4fab6e35a32e9449c7e4e545756439f62d73",
+    "license": "MIT",
+    "desc": "SQLite 编译到 WASM，完整 SQL 引擎",
+    "src": "https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.wasm"
+  },
+  {
+    "name": "sql-wasm.js",
+    "size": 48788,
+    "sha256": "694ca5b36aa3e6e71f417819d7df390b65343665fcfa5c69015ca33d93d291b3",
+    "license": "MIT",
+    "desc": "sql.js 的 JS 包装",
+    "src": "https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.js"
+  },
+  {
+    "name": "quickjs.wasm",
+    "size": 503134,
+    "sha256": "105c3bed22d457e43e3d1c3c1c6959fda62a8fe06f0fc8a985303c3a2be72232",
+    "license": "MIT",
+    "desc": "QuickJS ES2025 引擎，约 500KB，用于隔离沙箱",
+    "src": "https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/emscripten-module.wasm"
+  },
+  {
+    "name": "pyodide.js",
+    "size": 14767,
+    "sha256": "037907919d58ac79dbee2eee57e96507b79fad58260ab847dc6200443915c20f",
+    "license": "MPL-2.0",
+    "desc": "CPython 编译到 WASM 的加载器",
+    "src": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"
+  },
+  {
+    "name": "python_stdlib.zip",
+    "size": 2341761,
+    "sha256": "0dd443755a0244ae3052f2e0834413d68c43f362c651edd47b785ea9d26e4853",
+    "license": "MPL-2.0",
+    "desc": "Python 标准库",
+    "src": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip"
+  },
+  {
+    "name": "ruby+stdlib.wasm",
+    "size": 35204534,
+    "sha256": "1d8aea2daa127d73306615e08bbaae55c4af6fee036b0ecfe9720e04591db01e",
+    "license": "MIT",
+    "desc": "CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB",
+    "src": "https://cdn.jsdelivr.net/npm/@ruby/3.3-wasm-wasi@2.4.1/dist/ruby+stdlib.wasm"
+  },
+  {
+    "name": "php-web.mjs.wasm",
+    "size": 17289452,
+    "sha256": "e4f660ed9a02880114a38e686236b3ab07f7ac8c35cb1a81d4efd36dc11d3f18",
+    "license": "Apache-2.0",
+    "desc": "php-wasm 运行时本体，约 16 MB",
+    "src": "https://cdn.jsdelivr.net/npm/php-wasm/php-web.mjs.wasm"
+  }
+]--- manifest.json ---
+{
+  "updated": "2026-10-10",
+  "note": [
+    "按需加载的 WASM 运行时。主仓库保持零依赖，",
+    "这些只在用户主动要用某个语言时才下载。",
+    "下载后请自行缓存（Cache Storage / IndexedDB），之后离线也能用。"
+  ],
+  "usage": "首次需要联网；缓存后离线可用。加载请放 Web Worker，否则会白屏好几秒。",
+  "files": [
+    {
+      "name": "sql-wasm.wasm",
+      "size": 1500000,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "license": "MIT",
+      "desc": "SQLite",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sql-wasm.wasm"
+    },
+    {
+      "name": "lua.wasm",
+      "size": 200000,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "license": "MIT",
+      "desc": "Lua 5.4",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.wasm"
+    }
+  ]
+}
