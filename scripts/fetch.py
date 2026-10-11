@@ -20,6 +20,18 @@ RESOURCES = {
          'license': 'MIT', 'desc': 'sql.js 的 JS 包装'},
     ],
     'lua': [
+        # fengari：纯 JS 的 Lua VM，UMD，Worker 里 importScripts 直接用。
+        # wasmley 只暴露 C API（_luaL_newstate / _lua_pcallk...），
+        # 要跑一段代码得手写一堆 ccall 封装，成本高且易错。
+        {'name': 'fengari-web.js',
+         'url': ['https://cdn.jsdelivr.net/npm/fengari-web@0.2.1/dist/fengari-web.js',
+                 'https://cdn.jsdelivr.net/npm/fengari-web/dist/fengari-web.js',
+                 'https://unpkg.com/fengari-web@0.2.1/dist/fengari-web.js'],
+         'license': 'MIT', 'desc': 'Fengari：纯 JS 的 Lua VM，UMD'},
+        {'name': 'fengari.js',
+         'url': ['https://cdn.jsdelivr.net/npm/fengari@0.1.5/dist/fengari.js',
+                 'https://cdn.jsdelivr.net/npm/fengari/dist/fengari.js'],
+         'license': 'MIT', 'desc': 'Fengari 核心（fengari-web 依赖）'},
         # 多候选：npm 包内的实际路径会随版本变，写死一个就等于赌。
         # 依次试，哪个通就用哪个 —— 比事后猜路径省事得多。
         {'name': 'lua.wasm',
@@ -52,7 +64,17 @@ RESOURCES = {
          'license': 'Apache-2.0', 'desc': 'PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）'},
         {'name': 'php-web.mjs.wasm',
          'url': 'https://cdn.jsdelivr.net/npm/php-wasm/php-web.mjs.wasm',
-         'license': 'Apache-2.0', 'desc': 'php-wasm 运行时本体，约 16 MB'},
+         'license': 'Apache-2.0', 'desc': 'php-wasm 运行时本体（mjs 配套），约 16 MB'},
+        # Worker 里用 importScripts 只能加载 UMD，ESM(.mjs) 不行。
+        # php-web.mjs 只是 4KB 的 re-export 桩，真身是 php-web.js。
+        {'name': 'php-web.js',
+         'url': ['https://cdn.jsdelivr.net/npm/php-wasm@0.0.8/php-web.js',
+                 'https://cdn.jsdelivr.net/npm/php-wasm/php-web.js'],
+         'license': 'Apache-2.0', 'desc': 'php-wasm UMD 版（Worker 内可用）'},
+        {'name': 'php-web.js.wasm',
+         'url': ['https://cdn.jsdelivr.net/npm/php-wasm@0.0.8/php-web.js.wasm',
+                 'https://cdn.jsdelivr.net/npm/php-wasm/php-web.js.wasm'],
+         'license': 'Apache-2.0', 'desc': 'php-web.js 配套的运行时本体，约 16 MB'},
     ],
     'ruby': [
         {'name': 'ruby+stdlib.wasm',
