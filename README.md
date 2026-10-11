@@ -35,6 +35,42 @@ Actions → 「抓取运行时资源」→ 选目标 → 运行。
 
 按「体积 ÷ 价值」排序，小的先加：
 
+### C / C++（browsercc）
+
+| 文件 | 体积 | 说明 |
+| --- | --- | --- |
+| cpp-index.js | 0.01 MB | browsercc 主入口（含 compile 函数） |
+| clang.js | 0.07 MB | Clang 的胶水代码 |
+| lld.js | 0.07 MB | LLD 链接器的胶水代码 |
+| wasi-shim.js | 0.03 MB | **运行编译产物必需** |
+| lld.wasm | 22.1 MB | 链接器 |
+| sysroot.tar | 27.3 MB | C/C++ 标准库与头文件 |
+| clang.wasm | 40.6 MB | Clang 编译器本体 |
+
+**用法**（browsercc 官方示例）：
+
+```js
+import { compile } from 'browsercc';
+import { WASI, File, OpenFile, ConsoleStdout } from '@bjorn3/browser_wasi_shim';
+
+const { module, compileOutput } = await compile({
+  source: '#include <iostream>\nint main(){ std::cout << "hi\n"; }',
+  fileName: 'main.cpp',
+  flags: []
+});
+let output = '';
+const fds = [new OpenFile(new File([])),
+  new ConsoleStdout(d => { output += new TextDecoder().decode(d); }),
+  new ConsoleStdout(d => { output += new TextDecoder().decode(d); })];
+const wasi = new WASI([], [], fds);
+const inst = await WebAssembly.instantiate(module, { wasi_snapshot_preview1: wasi.wasiImport });
+wasi.start(inst);
+```
+
+**已知限制**：WASI 不支持 C++ 异常和多线程。
+
+### 其余资源
+
 | 资源 | 体积 | 许可证 | 说明 |
 | --- | --- | --- | --- |
 | php-web.mjs | 0.0 MB | Apache-2.0 | PHP 运行时加载器 |
@@ -49,7 +85,7 @@ Actions → 「抓取运行时资源」→ 选目标 → 运行。
 | php-web.mjs.wasm | 16.5 MB | Apache-2.0 | Zend 引擎本体 |
 | ruby+stdlib.wasm | 33.6 MB | MIT | CRuby 3.3 + 标准库 |
 
-合计 **64.5 MB**，11 个文件，全部已发布。
+**合计 18 个文件、154.7 MB，全部已发布。**
 
 详细的运行时资料（含各语言对比与接入顺序）在
 https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
