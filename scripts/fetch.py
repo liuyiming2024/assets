@@ -92,9 +92,12 @@ RESOURCES = {
                  'https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.wasm',
                  'https://unpkg.com/browsercc@0.1.1/dist/clang.wasm'],
          'license': 'MIT', 'desc': 'Clang 编译器本体，43MB'},
+        # 运行编译产物必需。dist/index.js 是 CommonJS 的入口桩（316 字节），
+        # 真正能 import 的是 ESM 构建 —— 用 +esm 或 dist/esm/index.js。
         {'name': 'wasi-shim.js',
-         'url': ['https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/index.js',
-                 'https://unpkg.com/@bjorn3/browser_wasi_shim@0.4.1/dist/index.js'],
+         'url': ['https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/+esm',
+                 'https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/esm/index.js',
+                 'https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/browser.js'],
          'license': 'MIT OR Apache-2.0', 'desc': 'WASI shim，运行编译产物必需'},
     ],
     'pyodide': [
