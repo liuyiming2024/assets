@@ -1,0 +1,202 @@
+run: 38104301695
+target: cpp
+
+--- dist 内容 ---
+  dist/_fetch.log  198 bytes
+  dist/_fetched.json  2973 bytes
+  dist/_publish.log  376 bytes
+  dist/clang.js  74193 bytes
+  dist/clang.wasm  42553880 bytes
+  dist/cpp-index.js  5296 bytes
+  dist/lld.js  71604 bytes
+  dist/lld.wasm  23202572 bytes
+  dist/sysroot.tar  28620800 bytes
+  dist/wasi-shim.js  27970 bytes
+
+--- _fetched.json ---
+[
+  {
+    "name": "cpp-index.js",
+    "size": 5296,
+    "sha256": "0265e7fccbf29facb65db6cc59045bec746fc184fe5f0fdf05aa0150d9699570",
+    "license": "MIT",
+    "desc": "browsercc 主入口（含 compile 函数）",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/index.js",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/index.js",
+      "https://unpkg.com/browsercc@0.1.1/dist/index.js"
+    ]
+  },
+  {
+    "name": "clang.js",
+    "size": 74193,
+    "sha256": "27aeadfcdb71f37fdeb6f1ca339de913ef9e2fdd1fd53c238a5decf635d9b129",
+    "license": "MIT",
+    "desc": "Clang 的 Emscripten 胶水代码",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/clang.js",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.js",
+      "https://unpkg.com/browsercc@0.1.1/dist/clang.js"
+    ]
+  },
+  {
+    "name": "lld.js",
+    "size": 71604,
+    "sha256": "b5054c24942687c744adbadcd549073ce3ecaf69b9fed5fa85a20c046751c1bf",
+    "license": "MIT",
+    "desc": "LLD 链接器的胶水代码",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/lld.js",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/lld.js",
+      "https://unpkg.com/browsercc@0.1.1/dist/lld.js"
+    ]
+  },
+  {
+    "name": "lld.wasm",
+    "size": 23202572,
+    "sha256": "810bb3be4eec8ad6bae60ceb7355c07bf7de8a54b5c8acb4d7a80613bd43c4bf",
+    "license": "MIT",
+    "desc": "LLD 链接器，23MB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/lld.wasm",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/lld.wasm",
+      "https://unpkg.com/browsercc@0.1.1/dist/lld.wasm"
+    ]
+  },
+  {
+    "name": "sysroot.tar",
+    "size": 28620800,
+    "sha256": "dbed83f93f0fa695f36041b82a95a8cd78f106a3f49d9cd860e57ae1ac823318",
+    "license": "MIT",
+    "desc": "C/C++ 标准库与头文件，29MB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/sysroot.tar",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/sysroot.tar",
+      "https://unpkg.com/browsercc@0.1.1/dist/sysroot.tar"
+    ]
+  },
+  {
+    "name": "clang.wasm",
+    "size": 42553880,
+    "sha256": "d574339640a9764544f405d4b5ae79ef7d05e49725b416fba74f5b15c00f8ee5",
+    "license": "MIT",
+    "desc": "Clang 编译器本体，43MB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/clang.wasm",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.wasm",
+      "https://unpkg.com/browsercc@0.1.1/dist/clang.wasm"
+    ]
+  },
+  {
+    "name": "wasi-shim.js",
+    "size": 27970,
+    "sha256": "01b030aa585df3f49e4c35cf65892f50905a5bf17ddfcd097e483f42ab961854",
+    "license": "MIT OR Apache-2.0",
+    "desc": "WASI shim，运行编译产物必需",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/+esm",
+      "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/esm/index.js",
+      "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/browser.js"
+    ]
+  }
+]
+
+--- 抓取日志 _fetch.log ---
+[cpp]
+  ✓ cpp-index.js  0.0 MB
+  ✓ clang.js  0.1 MB
+  ✓ lld.js  0.1 MB
+  ✓ lld.wasm  22.1 MB
+  ✓ sysroot.tar  27.3 MB
+  ✓ clang.wasm  40.6 MB
+  ✓ wasi-shim.js  0.0 MB
+
+共 7 个文件
+
+
+--- 发布日志 _publish.log ---
+  已替换旧资产 clang.js
+  已替换旧资产 clang.wasm
+  已替换旧资产 cpp-index.js
+  已替换旧资产 lld.js
+  已替换旧资产 lld.wasm
+  已替换旧资产 sysroot.tar
+  ✓ clang.js  0.1 MB
+  ✓ clang.wasm  40.6 MB
+  ✓ cpp-index.js  0.0 MB
+  ✓ lld.js  0.1 MB
+  ✓ lld.wasm  22.1 MB
+  ✓ sysroot.tar  27.3 MB
+  ✓ wasi-shim.js  0.0 MB
+
+发布 7 / 7
+
+
+--- manifest.json ---
+{
+  "updated": "2026-10-11",
+  "note": [
+    "按需加载的 WASM 运行时。主仓库保持零依赖，",
+    "这些只在用户主动要用某个语言时才下载。",
+    "下载后请自行缓存（Cache Storage / IndexedDB），之后离线也能用。"
+  ],
+  "usage": "首次需要联网；缓存后离线可用。加载请放 Web Worker，否则会白屏好几秒。",
+  "files": [
+    {
+      "name": "cpp-index.js",
+      "size": 5296,
+      "sha256": "0265e7fccbf29facb65db6cc59045bec746fc184fe5f0fdf05aa0150d9699570",
+      "license": "MIT",
+      "desc": "browsercc 主入口（含 compile 函数）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/cpp-index.js"
+    },
+    {
+      "name": "clang.js",
+      "size": 74193,
+      "sha256": "27aeadfcdb71f37fdeb6f1ca339de913ef9e2fdd1fd53c238a5decf635d9b129",
+      "license": "MIT",
+      "desc": "Clang 的 Emscripten 胶水代码",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/clang.js"
+    },
+    {
+      "name": "lld.js",
+      "size": 71604,
+      "sha256": "b5054c24942687c744adbadcd549073ce3ecaf69b9fed5fa85a20c046751c1bf",
+      "license": "MIT",
+      "desc": "LLD 链接器的胶水代码",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lld.js"
+    },
+    {
+      "name": "lld.wasm",
+      "size": 23202572,
+      "sha256": "810bb3be4eec8ad6bae60ceb7355c07bf7de8a54b5c8acb4d7a80613bd43c4bf",
+      "license": "MIT",
+      "desc": "LLD 链接器，23MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lld.wasm"
+    },
+    {
+      "name": "sysroot.tar",
+      "size": 28620800,
+      "sha256": "dbed83f93f0fa695f36041b82a95a8cd78f106a3f49d9cd860e57ae1ac823318",
+      "license": "MIT",
+      "desc": "C/C++ 标准库与头文件，29MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sysroot.tar"
+    },
+    {
+      "name": "clang.wasm",
+      "size": 42553880,
+      "sha256": "d574339640a9764544f405d4b5ae79ef7d05e49725b416fba74f5b15c00f8ee5",
+      "license": "MIT",
+      "desc": "Clang 编译器本体，43MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/clang.wasm"
+    },
+    {
+      "name": "wasi-shim.js",
+      "size": 27970,
+      "sha256": "01b030aa585df3f49e4c35cf65892f50905a5bf17ddfcd097e483f42ab961854",
+      "license": "MIT OR Apache-2.0",
+      "desc": "WASI shim，运行编译产物必需",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/wasi-shim.js"
+    }
+  ]
+}
