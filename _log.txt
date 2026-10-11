@@ -1,0 +1,495 @@
+run: 38106135282
+target: all
+
+--- dist 内容 ---
+  dist/_fetch.log  929 bytes
+  dist/_fetched.json  7766 bytes
+  dist/_publish.log  1145 bytes
+  dist/clang.js  74193 bytes
+  dist/clang.wasm  42553880 bytes
+  dist/cpp-index.js  5296 bytes
+  dist/lld.js  71604 bytes
+  dist/lld.wasm  23202572 bytes
+  dist/lua.js  213536 bytes
+  dist/lua.wasm  1255815 bytes
+  dist/php-web.mjs  4258 bytes
+  dist/php-web.mjs.wasm  17289452 bytes
+  dist/pyodide.asm.wasm  10087885 bytes
+  dist/pyodide.js  14767 bytes
+  dist/python_stdlib.zip  2341761 bytes
+  dist/quickjs.js  7850 bytes
+  dist/quickjs.wasm  503134 bytes
+  dist/ruby+stdlib.wasm  35204534 bytes
+  dist/ruby-wasi.js  23816 bytes
+  dist/sql-wasm.js  48788 bytes
+  dist/sql-wasm.wasm  659806 bytes
+  dist/sysroot.tar  28620800 bytes
+  dist/wasi-shim.js  27970 bytes
+
+--- _fetched.json ---
+[
+  {
+    "name": "sql-wasm.wasm",
+    "size": 659806,
+    "sha256": "0734155c83e493983d1f2ff5b09a4fab6e35a32e9449c7e4e545756439f62d73",
+    "license": "MIT",
+    "desc": "SQLite 编译到 WASM，完整 SQL 引擎",
+    "src": "https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.wasm"
+  },
+  {
+    "name": "sql-wasm.js",
+    "size": 48788,
+    "sha256": "694ca5b36aa3e6e71f417819d7df390b65343665fcfa5c69015ca33d93d291b3",
+    "license": "MIT",
+    "desc": "sql.js 的 JS 包装",
+    "src": "https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.js"
+  },
+  {
+    "name": "lua.wasm",
+    "size": 1255815,
+    "sha256": "d97c1a48364c4b4d4d391d4e2a7cbb43f5c1439e36aaeed7b43bcb58f8beb4f4",
+    "license": "MIT",
+    "desc": "Wasmley：官方 PUC-Rio Lua 5.4 编译到 WASM，约 630KB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm",
+      "https://cdn.jsdelivr.net/npm/wasmley/lua.wasm",
+      "https://unpkg.com/wasmley/dist/lua.wasm"
+    ]
+  },
+  {
+    "name": "lua.js",
+    "size": 213536,
+    "sha256": "6b2d4e3a313352109ab8f4795f0c6ad0a1b9267e378512b1382d62025b358d47",
+    "license": "MIT",
+    "desc": "Wasmley 的 JS 胶水代码，约 142KB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js",
+      "https://cdn.jsdelivr.net/npm/wasmley/lua.js",
+      "https://unpkg.com/wasmley/dist/lua.js"
+    ]
+  },
+  {
+    "name": "quickjs.wasm",
+    "size": 503134,
+    "sha256": "105c3bed22d457e43e3d1c3c1c6959fda62a8fe06f0fc8a985303c3a2be72232",
+    "license": "MIT",
+    "desc": "QuickJS ES2025 引擎，约 500KB，用于隔离沙箱",
+    "src": "https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/emscripten-module.wasm"
+  },
+  {
+    "name": "quickjs.js",
+    "size": 7850,
+    "sha256": "74991fd063dceb1515d44de01cf52543f95ec0de6975f92e3b6a384cea40a3dc",
+    "license": "MIT",
+    "desc": "QuickJS 的 JS 胶水代码",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/index.js",
+      "https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/+esm",
+      "https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/index.mjs"
+    ]
+  },
+  {
+    "name": "pyodide.js",
+    "size": 14767,
+    "sha256": "037907919d58ac79dbee2eee57e96507b79fad58260ab847dc6200443915c20f",
+    "license": "MPL-2.0",
+    "desc": "CPython 编译到 WASM 的加载器",
+    "src": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"
+  },
+  {
+    "name": "pyodide.asm.wasm",
+    "size": 10087885,
+    "sha256": "8f631d8453672664131b2d4c9c41f3adf5d32e9efda2cb421d3fdf38cab57a21",
+    "license": "MPL-2.0",
+    "desc": "CPython 核心（文件名是 asm.wasm，不是 pyodide.wasm）",
+    "src": [
+      "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.asm.wasm",
+      "https://cdn.jsdelivr.net/npm/pyodide@0.26.2/pyodide.asm.wasm",
+      "https://unpkg.com/pyodide@0.26.2/pyodide.asm.wasm"
+    ]
+  },
+  {
+    "name": "python_stdlib.zip",
+    "size": 2341761,
+    "sha256": "0dd443755a0244ae3052f2e0834413d68c43f362c651edd47b785ea9d26e4853",
+    "license": "MPL-2.0",
+    "desc": "Python 标准库",
+    "src": "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/python_stdlib.zip"
+  },
+  {
+    "name": "ruby+stdlib.wasm",
+    "size": 35204534,
+    "sha256": "1d8aea2daa127d73306615e08bbaae55c4af6fee036b0ecfe9720e04591db01e",
+    "license": "MIT",
+    "desc": "CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB",
+    "src": "https://cdn.jsdelivr.net/npm/@ruby/3.3-wasm-wasi@2.4.1/dist/ruby+stdlib.wasm"
+  },
+  {
+    "name": "ruby-wasi.js",
+    "size": 23816,
+    "sha256": "b6c0e3ffad5ea5e4ca963ce122ad0a703cd80d45495606ddcc37fc3e2d8a4f11",
+    "license": "MIT",
+    "desc": "ruby.wasm 的浏览器加载器（VM 控制入口）",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser/+esm",
+      "https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/+esm",
+      "https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js",
+      "https://unpkg.com/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js"
+    ]
+  },
+  {
+    "name": "php-web.mjs",
+    "size": 4258,
+    "sha256": "57ca4eb5fac94a43be2c1fd5b93d9445c485ab5044e3446befd62845b2ba467e",
+    "license": "Apache-2.0",
+    "desc": "PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/php-wasm@0.0.8/PhpWeb.mjs",
+      "https://unpkg.com/php-wasm@0.0.8/PhpWeb.mjs"
+    ]
+  },
+  {
+    "name": "php-web.mjs.wasm",
+    "size": 17289452,
+    "sha256": "e4f660ed9a02880114a38e686236b3ab07f7ac8c35cb1a81d4efd36dc11d3f18",
+    "license": "Apache-2.0",
+    "desc": "php-wasm 运行时本体，约 16 MB",
+    "src": "https://cdn.jsdelivr.net/npm/php-wasm/php-web.mjs.wasm"
+  },
+  {
+    "name": "cpp-index.js",
+    "size": 5296,
+    "sha256": "0265e7fccbf29facb65db6cc59045bec746fc184fe5f0fdf05aa0150d9699570",
+    "license": "MIT",
+    "desc": "browsercc 主入口（含 compile 函数）",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/index.js",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/index.js",
+      "https://unpkg.com/browsercc@0.1.1/dist/index.js"
+    ]
+  },
+  {
+    "name": "clang.js",
+    "size": 74193,
+    "sha256": "27aeadfcdb71f37fdeb6f1ca339de913ef9e2fdd1fd53c238a5decf635d9b129",
+    "license": "MIT",
+    "desc": "Clang 的 Emscripten 胶水代码",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/clang.js",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.js",
+      "https://unpkg.com/browsercc@0.1.1/dist/clang.js"
+    ]
+  },
+  {
+    "name": "lld.js",
+    "size": 71604,
+    "sha256": "b5054c24942687c744adbadcd549073ce3ecaf69b9fed5fa85a20c046751c1bf",
+    "license": "MIT",
+    "desc": "LLD 链接器的胶水代码",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/lld.js",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/lld.js",
+      "https://unpkg.com/browsercc@0.1.1/dist/lld.js"
+    ]
+  },
+  {
+    "name": "lld.wasm",
+    "size": 23202572,
+    "sha256": "810bb3be4eec8ad6bae60ceb7355c07bf7de8a54b5c8acb4d7a80613bd43c4bf",
+    "license": "MIT",
+    "desc": "LLD 链接器，23MB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/lld.wasm",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/lld.wasm",
+      "https://unpkg.com/browsercc@0.1.1/dist/lld.wasm"
+    ]
+  },
+  {
+    "name": "sysroot.tar",
+    "size": 28620800,
+    "sha256": "dbed83f93f0fa695f36041b82a95a8cd78f106a3f49d9cd860e57ae1ac823318",
+    "license": "MIT",
+    "desc": "C/C++ 标准库与头文件，29MB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/sysroot.tar",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/sysroot.tar",
+      "https://unpkg.com/browsercc@0.1.1/dist/sysroot.tar"
+    ]
+  },
+  {
+    "name": "clang.wasm",
+    "size": 42553880,
+    "sha256": "d574339640a9764544f405d4b5ae79ef7d05e49725b416fba74f5b15c00f8ee5",
+    "license": "MIT",
+    "desc": "Clang 编译器本体，43MB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/dist/clang.wasm",
+      "https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.wasm",
+      "https://unpkg.com/browsercc@0.1.1/dist/clang.wasm"
+    ]
+  },
+  {
+    "name": "wasi-shim.js",
+    "size": 27970,
+    "sha256": "01b030aa585df3f49e4c35cf65892f50905a5bf17ddfcd097e483f42ab961854",
+    "license": "MIT OR Apache-2.0",
+    "desc": "WASI shim，运行编译产物必需",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/+esm",
+      "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/esm/index.js",
+      "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/browser.js"
+    ]
+  }
+]
+
+--- 抓取日志 _fetch.log ---
+[sqljs]
+  ✓ sql-wasm.wasm  0.6 MB
+  ✓ sql-wasm.js  0.0 MB
+[lua]
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm 第 2 次失败，重试
+  ✓ lua.wasm  1.2 MB
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js 第 2 次失败，重试
+  ✓ lua.js  0.2 MB
+[quickjs]
+  ✓ quickjs.wasm  0.5 MB
+  ✓ quickjs.js  0.0 MB
+[pyodide]
+  ✓ pyodide.js  0.0 MB
+  ✓ pyodide.asm.wasm  9.6 MB
+  ✓ python_stdlib.zip  2.2 MB
+[ruby]
+  ✓ ruby+stdlib.wasm  33.6 MB
+  ✓ ruby-wasi.js  0.0 MB
+[php]
+  ✓ php-web.mjs  0.0 MB
+  ✓ php-web.mjs.wasm  16.5 MB
+[cpp]
+  ✓ cpp-index.js  0.0 MB
+  ✓ clang.js  0.1 MB
+  ✓ lld.js  0.1 MB
+  ✓ lld.wasm  22.1 MB
+  ✓ sysroot.tar  27.3 MB
+  ✓ clang.wasm  40.6 MB
+  ✓ wasi-shim.js  0.0 MB
+
+共 20 个文件
+
+
+--- 发布日志 _publish.log ---
+  已替换旧资产 clang.js
+  已替换旧资产 clang.wasm
+  已替换旧资产 cpp-index.js
+  已替换旧资产 lld.js
+  已替换旧资产 lld.wasm
+  已替换旧资产 lua.js
+  已替换旧资产 lua.wasm
+  已替换旧资产 php-web.mjs
+  已替换旧资产 php-web.mjs.wasm
+  已替换旧资产 pyodide.asm.wasm
+  已替换旧资产 pyodide.js
+  已替换旧资产 python_stdlib.zip
+  已替换旧资产 quickjs.wasm
+  已替换旧资产 ruby+stdlib.wasm
+  已替换旧资产 sql-wasm.js
+  已替换旧资产 sql-wasm.wasm
+  已替换旧资产 sysroot.tar
+  已替换旧资产 wasi-shim.js
+  ✓ clang.js  0.1 MB
+  ✓ clang.wasm  40.6 MB
+  ✓ cpp-index.js  0.0 MB
+  ✓ lld.js  0.1 MB
+  ✓ lld.wasm  22.1 MB
+  ✓ lua.js  0.2 MB
+  ✓ lua.wasm  1.2 MB
+  ✓ php-web.mjs  0.0 MB
+  ✓ php-web.mjs.wasm  16.5 MB
+  ✓ pyodide.asm.wasm  9.6 MB
+  ✓ pyodide.js  0.0 MB
+  ✓ python_stdlib.zip  2.2 MB
+  ✓ quickjs.js  0.0 MB
+  ✓ quickjs.wasm  0.5 MB
+  ✓ ruby+stdlib.wasm  33.6 MB
+  ✓ ruby-wasi.js  0.0 MB
+  ✓ sql-wasm.js  0.0 MB
+  ✓ sql-wasm.wasm  0.6 MB
+  ✓ sysroot.tar  27.3 MB
+  ✓ wasi-shim.js  0.0 MB
+
+发布 20 / 20
+
+
+--- manifest.json ---
+{
+  "updated": "2026-10-11",
+  "note": [
+    "按需加载的 WASM 运行时。主仓库保持零依赖，",
+    "这些只在用户主动要用某个语言时才下载。",
+    "下载后请自行缓存（Cache Storage / IndexedDB），之后离线也能用。"
+  ],
+  "usage": "首次需要联网；缓存后离线可用。加载请放 Web Worker，否则会白屏好几秒。",
+  "files": [
+    {
+      "name": "sql-wasm.wasm",
+      "size": 659806,
+      "sha256": "0734155c83e493983d1f2ff5b09a4fab6e35a32e9449c7e4e545756439f62d73",
+      "license": "MIT",
+      "desc": "SQLite 编译到 WASM，完整 SQL 引擎",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sql-wasm.wasm"
+    },
+    {
+      "name": "sql-wasm.js",
+      "size": 48788,
+      "sha256": "694ca5b36aa3e6e71f417819d7df390b65343665fcfa5c69015ca33d93d291b3",
+      "license": "MIT",
+      "desc": "sql.js 的 JS 包装",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sql-wasm.js"
+    },
+    {
+      "name": "lua.wasm",
+      "size": 1255815,
+      "sha256": "d97c1a48364c4b4d4d391d4e2a7cbb43f5c1439e36aaeed7b43bcb58f8beb4f4",
+      "license": "MIT",
+      "desc": "Wasmley：官方 PUC-Rio Lua 5.4 编译到 WASM，约 630KB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.wasm"
+    },
+    {
+      "name": "lua.js",
+      "size": 213536,
+      "sha256": "6b2d4e3a313352109ab8f4795f0c6ad0a1b9267e378512b1382d62025b358d47",
+      "license": "MIT",
+      "desc": "Wasmley 的 JS 胶水代码，约 142KB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.js"
+    },
+    {
+      "name": "quickjs.wasm",
+      "size": 503134,
+      "sha256": "105c3bed22d457e43e3d1c3c1c6959fda62a8fe06f0fc8a985303c3a2be72232",
+      "license": "MIT",
+      "desc": "QuickJS ES2025 引擎，约 500KB，用于隔离沙箱",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/quickjs.wasm"
+    },
+    {
+      "name": "quickjs.js",
+      "size": 7850,
+      "sha256": "74991fd063dceb1515d44de01cf52543f95ec0de6975f92e3b6a384cea40a3dc",
+      "license": "MIT",
+      "desc": "QuickJS 的 JS 胶水代码",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/quickjs.js"
+    },
+    {
+      "name": "pyodide.js",
+      "size": 14767,
+      "sha256": "037907919d58ac79dbee2eee57e96507b79fad58260ab847dc6200443915c20f",
+      "license": "MPL-2.0",
+      "desc": "CPython 编译到 WASM 的加载器",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/pyodide.js"
+    },
+    {
+      "name": "pyodide.asm.wasm",
+      "size": 10087885,
+      "sha256": "8f631d8453672664131b2d4c9c41f3adf5d32e9efda2cb421d3fdf38cab57a21",
+      "license": "MPL-2.0",
+      "desc": "CPython 核心（文件名是 asm.wasm，不是 pyodide.wasm）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/pyodide.asm.wasm"
+    },
+    {
+      "name": "python_stdlib.zip",
+      "size": 2341761,
+      "sha256": "0dd443755a0244ae3052f2e0834413d68c43f362c651edd47b785ea9d26e4853",
+      "license": "MPL-2.0",
+      "desc": "Python 标准库",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/python_stdlib.zip"
+    },
+    {
+      "name": "ruby+stdlib.wasm",
+      "size": 35204534,
+      "sha256": "1d8aea2daa127d73306615e08bbaae55c4af6fee036b0ecfe9720e04591db01e",
+      "license": "MIT",
+      "desc": "CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/ruby+stdlib.wasm"
+    },
+    {
+      "name": "ruby-wasi.js",
+      "size": 23816,
+      "sha256": "b6c0e3ffad5ea5e4ca963ce122ad0a703cd80d45495606ddcc37fc3e2d8a4f11",
+      "license": "MIT",
+      "desc": "ruby.wasm 的浏览器加载器（VM 控制入口）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/ruby-wasi.js"
+    },
+    {
+      "name": "php-web.mjs",
+      "size": 4258,
+      "sha256": "57ca4eb5fac94a43be2c1fd5b93d9445c485ab5044e3446befd62845b2ba467e",
+      "license": "Apache-2.0",
+      "desc": "PHP 8.x 运行时加载器（Zend 引擎编译到 WASM）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/php-web.mjs"
+    },
+    {
+      "name": "php-web.mjs.wasm",
+      "size": 17289452,
+      "sha256": "e4f660ed9a02880114a38e686236b3ab07f7ac8c35cb1a81d4efd36dc11d3f18",
+      "license": "Apache-2.0",
+      "desc": "php-wasm 运行时本体，约 16 MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/php-web.mjs.wasm"
+    },
+    {
+      "name": "cpp-index.js",
+      "size": 5296,
+      "sha256": "0265e7fccbf29facb65db6cc59045bec746fc184fe5f0fdf05aa0150d9699570",
+      "license": "MIT",
+      "desc": "browsercc 主入口（含 compile 函数）",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/cpp-index.js"
+    },
+    {
+      "name": "clang.js",
+      "size": 74193,
+      "sha256": "27aeadfcdb71f37fdeb6f1ca339de913ef9e2fdd1fd53c238a5decf635d9b129",
+      "license": "MIT",
+      "desc": "Clang 的 Emscripten 胶水代码",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/clang.js"
+    },
+    {
+      "name": "lld.js",
+      "size": 71604,
+      "sha256": "b5054c24942687c744adbadcd549073ce3ecaf69b9fed5fa85a20c046751c1bf",
+      "license": "MIT",
+      "desc": "LLD 链接器的胶水代码",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lld.js"
+    },
+    {
+      "name": "lld.wasm",
+      "size": 23202572,
+      "sha256": "810bb3be4eec8ad6bae60ceb7355c07bf7de8a54b5c8acb4d7a80613bd43c4bf",
+      "license": "MIT",
+      "desc": "LLD 链接器，23MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lld.wasm"
+    },
+    {
+      "name": "sysroot.tar",
+      "size": 28620800,
+      "sha256": "dbed83f93f0fa695f36041b82a95a8cd78f106a3f49d9cd860e57ae1ac823318",
+      "license": "MIT",
+      "desc": "C/C++ 标准库与头文件，29MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/sysroot.tar"
+    },
+    {
+      "name": "clang.wasm",
+      "size": 42553880,
+      "sha256": "d574339640a9764544f405d4b5ae79ef7d05e49725b416fba74f5b15c00f8ee5",
+      "license": "MIT",
+      "desc": "Clang 编译器本体，43MB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/clang.wasm"
+    },
+    {
+      "name": "wasi-shim.js",
+      "size": 27970,
+      "sha256": "01b030aa585df3f49e4c35cf65892f50905a5bf17ddfcd097e483f42ab961854",
+      "license": "MIT OR Apache-2.0",
+      "desc": "WASI shim，运行编译产物必需",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/wasi-shim.js"
+    }
+  ]
+}
