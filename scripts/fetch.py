@@ -37,6 +37,11 @@ RESOURCES = {
         {'name': 'quickjs.wasm',
          'url': 'https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/emscripten-module.wasm',
          'license': 'MIT', 'desc': 'QuickJS ES2025 引擎，约 500KB，用于隔离沙箱'},
+        {'name': 'quickjs.js',
+         'url': ['https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/index.js',
+                 'https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/+esm',
+                 'https://cdn.jsdelivr.net/npm/@jitl/quickjs-wasmfile-release-sync@0.32.0/dist/index.mjs'],
+         'license': 'MIT', 'desc': 'QuickJS 的 JS 胶水代码'},
     ],
     'php': [
         # 不钉版本时 jsdelivr 返回 996 字节的错误页（不是真文件）。
@@ -53,10 +58,13 @@ RESOURCES = {
         {'name': 'ruby+stdlib.wasm',
          'url': 'https://cdn.jsdelivr.net/npm/@ruby/3.3-wasm-wasi@2.4.1/dist/ruby+stdlib.wasm',
          'license': 'MIT', 'desc': 'CRuby 3.3 编译到 WASM（官方 ruby.wasm 项目），约 10 MB'},
-        {'name': 'browser.script.iife.js',
-         'url': ['https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser/script.iife.js',
-                 'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js'],
-         'license': 'MIT', 'desc': 'ruby.wasm 的浏览器直接可用脚本'},
+        # 只有 wasm 没有加载器，等于拿到引擎没钥匙 —— 必须把 JS 也抓下来。
+        {'name': 'ruby-wasi.js',
+         'url': ['https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser/+esm',
+                 'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/+esm',
+                 'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js',
+                 'https://unpkg.com/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js'],
+         'license': 'MIT', 'desc': 'ruby.wasm 的浏览器加载器（VM 控制入口）'},
     ],
     # C/C++：browsercc 把 Clang + LLD 编译到 WASM，在浏览器里真编译。
     # 配套需要 WASI shim 才能运行编译产物（@bjorn3/browser_wasi_shim）。
