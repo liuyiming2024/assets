@@ -1,0 +1,117 @@
+run: 38106355743
+target: lua
+
+--- dist 内容 ---
+  dist/_fetch.log  1045 bytes
+  dist/_fetched.json  1244 bytes
+  dist/_publish.log  145 bytes
+  dist/fengari-web.js  219632 bytes
+  dist/lua.js  213536 bytes
+  dist/lua.wasm  1255815 bytes
+
+--- _fetched.json ---
+[
+  {
+    "name": "fengari-web.js",
+    "size": 219632,
+    "sha256": "fbea0ee4b2e38840f96b03eb7ee162ae391127df26fccd000a2b8756535c8186",
+    "license": "MIT",
+    "desc": "Fengari：纯 JS 的 Lua VM，UMD",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/fengari-web@0.2.1/dist/fengari-web.js",
+      "https://cdn.jsdelivr.net/npm/fengari-web/dist/fengari-web.js",
+      "https://unpkg.com/fengari-web@0.2.1/dist/fengari-web.js"
+    ]
+  },
+  {
+    "name": "lua.wasm",
+    "size": 1255815,
+    "sha256": "d97c1a48364c4b4d4d391d4e2a7cbb43f5c1439e36aaeed7b43bcb58f8beb4f4",
+    "license": "MIT",
+    "desc": "Wasmley：官方 PUC-Rio Lua 5.4 编译到 WASM，约 630KB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm",
+      "https://cdn.jsdelivr.net/npm/wasmley/lua.wasm",
+      "https://unpkg.com/wasmley/dist/lua.wasm"
+    ]
+  },
+  {
+    "name": "lua.js",
+    "size": 213536,
+    "sha256": "6b2d4e3a313352109ab8f4795f0c6ad0a1b9267e378512b1382d62025b358d47",
+    "license": "MIT",
+    "desc": "Wasmley 的 JS 胶水代码，约 142KB",
+    "src": [
+      "https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js",
+      "https://cdn.jsdelivr.net/npm/wasmley/lua.js",
+      "https://unpkg.com/wasmley/dist/lua.js"
+    ]
+  }
+]
+
+--- 抓取日志 _fetch.log ---
+[lua]
+    · https://cdn.jsdelivr.net/npm/fengari-web@0.2.1/dist/fengari-web.js 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/fengari-web@0.2.1/dist/fengari-web.js 第 2 次失败，重试
+  ✓ fengari-web.js  0.2 MB
+    · https://cdn.jsdelivr.net/npm/fengari@0.1.5/dist/fengari.js 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/fengari@0.1.5/dist/fengari.js 第 2 次失败，重试
+    · https://cdn.jsdelivr.net/npm/fengari/dist/fengari.js 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/fengari/dist/fengari.js 第 2 次失败，重试
+  ✗ fengari.js → HTTP Error 404: Not Found（已试 2 个地址）
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.wasm 第 2 次失败，重试
+  ✓ lua.wasm  1.2 MB
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js 第 1 次失败，重试
+    · https://cdn.jsdelivr.net/npm/wasmley/dist/lua.js 第 2 次失败，重试
+  ✓ lua.js  0.2 MB
+
+共 3 个文件
+
+
+--- 发布日志 _publish.log ---
+  已替换旧资产 lua.js
+  已替换旧资产 lua.wasm
+  ✓ fengari-web.js  0.2 MB
+  ✓ lua.js  0.2 MB
+  ✓ lua.wasm  1.2 MB
+
+发布 3 / 3
+
+
+--- manifest.json ---
+{
+  "updated": "2026-10-11",
+  "note": [
+    "按需加载的 WASM 运行时。主仓库保持零依赖，",
+    "这些只在用户主动要用某个语言时才下载。",
+    "下载后请自行缓存（Cache Storage / IndexedDB），之后离线也能用。"
+  ],
+  "usage": "首次需要联网；缓存后离线可用。加载请放 Web Worker，否则会白屏好几秒。",
+  "files": [
+    {
+      "name": "fengari-web.js",
+      "size": 219632,
+      "sha256": "fbea0ee4b2e38840f96b03eb7ee162ae391127df26fccd000a2b8756535c8186",
+      "license": "MIT",
+      "desc": "Fengari：纯 JS 的 Lua VM，UMD",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/fengari-web.js"
+    },
+    {
+      "name": "lua.wasm",
+      "size": 1255815,
+      "sha256": "d97c1a48364c4b4d4d391d4e2a7cbb43f5c1439e36aaeed7b43bcb58f8beb4f4",
+      "license": "MIT",
+      "desc": "Wasmley：官方 PUC-Rio Lua 5.4 编译到 WASM，约 630KB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.wasm"
+    },
+    {
+      "name": "lua.js",
+      "size": 213536,
+      "sha256": "6b2d4e3a313352109ab8f4795f0c6ad0a1b9267e378512b1382d62025b358d47",
+      "license": "MIT",
+      "desc": "Wasmley 的 JS 胶水代码，约 142KB",
+      "url": "https://github.com/liuyiming2024/assets/releases/latest/download/lua.js"
+    }
+  ]
+}
