@@ -22,7 +22,7 @@ on:
         required: true
         default: 'all'
         type: choice
-        options: [all, sqljs, lua, quickjs, pyodide, ruby, php]
+        options: [all, sqljs, lua, quickjs, pyodide, ruby, php, cpp]
       tag:
         description: 'Release 标签（默认 latest）'
         required: false

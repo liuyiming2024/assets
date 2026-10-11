@@ -58,6 +58,39 @@ RESOURCES = {
                  'https://cdn.jsdelivr.net/npm/@ruby/wasm-wasi@2.4.1/dist/browser.script.iife.js'],
          'license': 'MIT', 'desc': 'ruby.wasm 的浏览器直接可用脚本'},
     ],
+    # C/C++：browsercc 把 Clang + LLD 编译到 WASM，在浏览器里真编译。
+    # 配套需要 WASI shim 才能运行编译产物（@bjorn3/browser_wasi_shim）。
+    # 体积代价大（约 95MB），但这是浏览器内跑真 C++ 的唯一现实路径。
+    'cpp': [
+        {'name': 'cpp-index.js',
+         'url': ['https://cdn.jsdelivr.net/npm/browsercc@0.1.1/index.js',
+                 'https://unpkg.com/browsercc@0.1.1/index.js'],
+         'license': 'MIT', 'desc': 'browsercc 主入口（含 compile 函数）'},
+        {'name': 'clang.js',
+         'url': ['https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.js',
+                 'https://unpkg.com/browsercc@0.1.1/clang.js'],
+         'license': 'MIT', 'desc': 'Clang 的 Emscripten 胶水代码'},
+        {'name': 'lld.js',
+         'url': ['https://cdn.jsdelivr.net/npm/browsercc@0.1.1/lld.js',
+                 'https://unpkg.com/browsercc@0.1.1/lld.js'],
+         'license': 'MIT', 'desc': 'LLD 链接器的胶水代码'},
+        {'name': 'lld.wasm',
+         'url': ['https://cdn.jsdelivr.net/npm/browsercc@0.1.1/lld.wasm',
+                 'https://unpkg.com/browsercc@0.1.1/lld.wasm'],
+         'license': 'MIT', 'desc': 'LLD 链接器，23MB'},
+        {'name': 'sysroot.tar',
+         'url': ['https://cdn.jsdelivr.net/npm/browsercc@0.1.1/sysroot.tar',
+                 'https://unpkg.com/browsercc@0.1.1/sysroot.tar'],
+         'license': 'MIT', 'desc': 'C/C++ 标准库与头文件，29MB'},
+        {'name': 'clang.wasm',
+         'url': ['https://cdn.jsdelivr.net/npm/browsercc@0.1.1/clang.wasm',
+                 'https://unpkg.com/browsercc@0.1.1/clang.wasm'],
+         'license': 'MIT', 'desc': 'Clang 编译器本体，43MB'},
+        {'name': 'wasi-shim.js',
+         'url': ['https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/dist/index.js',
+                 'https://unpkg.com/@bjorn3/browser_wasi_shim@0.4.1/dist/index.js'],
+         'license': 'MIT OR Apache-2.0', 'desc': 'WASI shim，运行编译产物必需'},
+    ],
     'pyodide': [
         {'name': 'pyodide.js',
          'url': 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js',
@@ -78,7 +111,10 @@ RESOURCES = {
 }
 
 # 体积从小到大。大的放后面 —— 抓一次很久，别让它堵住其他的。
-ORDER = ['sqljs', 'lua', 'quickjs', 'pyodide', 'ruby', 'php']
+# 体积从小到大。大的放后面 —— 抓一次很久，别让它堵住其他的。
+# cpp 单独放最后：clang.wasm 43MB + lld 23MB + sysroot 29MB ≈ 95MB，
+# 比前面所有资源加起来还大，所以它也支持单独 target 触发。
+ORDER = ['sqljs', 'lua', 'quickjs', 'pyodide', 'ruby', 'php', 'cpp']
 
 
 def grab(item, out_dir, tries=3):
