@@ -66,22 +66,40 @@ def main():
     log("target = %s，共 %d 个文件" % (target, len(files)))
 
     # 1) 取 Release 清单（含期望体积）
+    #
+    # ⚠ 不能用 gh api + GITHUB_TOKEN：实测 404 Not Found。
+    #   仓库是公开的、Release 也是 published 的 —— 用个人 token 能拿到 23 个资产，
+    #   唯独 Actions 里的临时 GITHUB_TOKEN 拿不到。
+    #   这是那个 token 的权限边界，不是仓库配置问题。
+    #   所以走**匿名** curl：公开 Release 的 API 允许匿名读（60 次/小时）。
     log("")
     log("--- 读取 Release 清单 ---")
-    r = run(["gh", "api", "repos/%s/releases/latest" % REPO])
-    if r.returncode != 0:
-        log("gh api 失败（退出码 %d）:" % r.returncode)
-        log("  stdout: %s" % (r.stdout or "")[:400])
-        log("  stderr: %s" % (r.stderr or "")[:400])
-        log("")
-        log("常见原因：GITHUB_TOKEN 权限不足，或该仓库没有 latest release。")
-        return 1
-    try:
-        rel = json.loads(r.stdout)
-    except Exception as e:
-        log("清单不是合法 JSON: %s" % e)
-        log("  前 200 字符: %s" % r.stdout[:200])
-        return 1
+    api_url = "https://api.github.com/repos/%s/releases/latest" % REPO
+    r = run(["curl", "-sS", "-L", "--max-time", "90",
+             "-H", "User-Agent: asset-mirror", api_url])
+    rel = None
+    if r.returncode == 0:
+        try:
+            rel = json.loads(r.stdout)
+        except Exception as e:
+            log("返回不是合法 JSON: %s" % e)
+            log("  前 300 字符: %s" % (r.stdout or "")[:300])
+    else:
+        log("curl 失败（退出码 %d）: %s" % (r.returncode, (r.stderr or "")[:300]))
+
+    if rel is None:
+        # 兜底：再试 GITHUB_TOKEN 那条路（万一哪天权限放宽了）
+        log("  匿名失败，改用 gh api 重试…")
+        r2 = run(["gh", "api", "repos/%s/releases/latest" % REPO])
+        if r2.returncode == 0:
+            try:
+                rel = json.loads(r2.stdout)
+                log("  gh api 成功")
+            except Exception:
+                pass
+        if rel is None:
+            log("两条路都拿不到清单，放弃")
+            return 1
 
     assets = {a["name"]: a for a in rel.get("assets", [])}
     log("Release: %s，资产 %d 个" % (rel.get("tag_name"), len(assets)))
@@ -108,16 +126,18 @@ def main():
             continue
 
         log("  ⬇ %-20s 期望 %d 字节" % (f, want))
-        d = run(["gh", "release", "download", "latest", "--repo", REPO,
-                 "--pattern", f, "--dir", OUT, "--clobber"])
+        # 同样走匿名直链（-L 跟随 302）。
+        # 浏览器 fetch 拿不到是因为缺 CORS 头；curl 不做 CORS 检查，不受影响 ——
+        # 这一点正是"地址栏能下、fetch 下不了"的同一个原因。
+        dl = "https://github.com/%s/releases/download/latest/%s" % (REPO, f)
+        d = run(["curl", "-sS", "-L", "--max-time", "900", "-o", dst, dl])
         if d.returncode != 0:
-            log("     ❌ gh release download 失败（退出码 %d）" % d.returncode)
+            log("     ❌ curl 下载失败（退出码 %d）" % d.returncode)
             log("     stderr: %s" % (d.stderr or "")[:300])
             fail += 1
             continue
         if not os.path.isfile(dst):
-            log("     ❌ 命令返回 0 但文件不在（pattern 未命中？）")
-            log("     stdout: %s" % (d.stdout or "")[:200])
+            log("     ❌ 返回 0 但文件不在（URL 未命中？）")
             fail += 1
             continue
         got = os.path.getsize(dst)
