@@ -1,16 +1,22 @@
-target = sqlite，共 2 个文件
+target = lua，共 3 个文件
 
 --- 取期望值（来自 Code 的 api/runtimes.json）---
 清单里有 21 个文件的期望值
 
 --- 下载 ---
-  ⬇ sql-wasm.js          期望 48788 字节
-     ✅ 48788 字节，SHA-256 一致
-  ⬇ sql-wasm.wasm        期望 659806 字节
-     ✅ 659806 字节，SHA-256 一致
+  ⬇ fengari-web.js       期望 219632 字节
+     ✅ 219632 字节，SHA-256 一致
+  ⬇ lua.js               期望 213536 字节
+     ✅ 213536 字节，SHA-256 一致
+  ⬇ lua.wasm             期望 1255815 字节
+     ✅ 1255815 字节，SHA-256 一致
 
-下载 2，跳过 0，失败 0
+下载 3，跳过 0，失败 0
 
 --- 生成清单 ---
+  fengari-web.js               219632  fbea0ee4b2e38840…
+  lua.js                       213536  6b2d4e3a31335210…
+  lua.wasm                    1255815  d97c1a48364c4b4d…
+  manifest.json                   323  d588a3d467e29338…
   sql-wasm.js                   48788  694ca5b36aa3e6e7…
   sql-wasm.wasm                659806  0734155c83e49398…
