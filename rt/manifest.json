@@ -1,0 +1,13 @@
+{
+  "updated": "2026-10-14T08:51:36Z",
+  "files": {
+    "sql-wasm.js": {
+      "size": 48788,
+      "sha256": "694ca5b36aa3e6e71f417819d7df390b65343665fcfa5c69015ca33d93d291b3"
+    },
+    "sql-wasm.wasm": {
+      "size": 659806,
+      "sha256": "0734155c83e493983d1f2ff5b09a4fab6e35a32e9449c7e4e545756439f62d73"
+    }
+  }
+}

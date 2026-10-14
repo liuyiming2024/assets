@@ -1,0 +1,16 @@
+target = sqlite，共 2 个文件
+
+--- 取期望值（来自 Code 的 api/runtimes.json）---
+清单里有 21 个文件的期望值
+
+--- 下载 ---
+  ⬇ sql-wasm.js          期望 48788 字节
+     ✅ 48788 字节，SHA-256 一致
+  ⬇ sql-wasm.wasm        期望 659806 字节
+     ✅ 659806 字节，SHA-256 一致
+
+下载 2，跳过 0，失败 0
+
+--- 生成清单 ---
+  sql-wasm.js                   48788  694ca5b36aa3e6e7…
+  sql-wasm.wasm                659806  0734155c83e49398…
