@@ -1,9 +1,5 @@
 target = sqlite，共 2 个文件
 
 --- 读取 Release 清单 ---
-gh api 失败（退出码 1）:
-  stdout: {"message":"Not Found","documentation_url":"https://docs.github.com/rest/releases/releases#get-the-latest-release","status":"404"}
-  stderr: gh: Not Found (HTTP 404)
-
-
-常见原因：GITHUB_TOKEN 权限不足，或该仓库没有 latest release。
+Release: None，资产 0 个
+⚠ Release 里没有任何资产 —— 请先跑一次「抓取运行时资源」
