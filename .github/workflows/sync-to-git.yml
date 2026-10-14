@@ -14,7 +14,7 @@
 #   跨域问题从根上消失 —— 不用改我们的代码去"绕过"什么。
 #
 # 因此取舍改了：
-#   原先 .gitignore 里写"抓下来的文件不进 git，二进制只增不减"。
+#   原先 .gitignore 写"抓下来的文件不进 git，二进制只增不减"。
 #   那条理由是为了让 clone 快，代价是文件只能从 Release 取，
 #   而 Release 下载端点恰恰是 fetch 拿不到 CORS 头的那个。
 #   现在宁可 clone 慢一点，也要让浏览器真能取到 ——
@@ -24,11 +24,9 @@
 #   沙箱访问 Release 下载端点实测 403（本机 IP 与 Actions 机房不同）。
 #   Actions 用 gh 走认证 API，不受此限。
 #
-# 单文件体积（决定能不能进 git / 走不走 jsDelivr）：
-#   clang.wasm 40.6 MB · ruby 33.6 · sysroot 27.3 · lld 22.1
-#   php 16.5 · pyodide 9.6 · stdlib 2.2 · lua 1.6 · sqlite 0.7 · quickjs 0.5
-#   GitHub 硬上限 100 MB，全部放得下。
-#   jsDelivr 免费版单文件约 20 MB 上限 —— 超过的走 raw 域。
+# 为什么主逻辑是 Python 脚本而不是内联 shell：
+#   第一版用 shell，失败时 _diag 没推回仓库，只看到 job failure，
+#   不知道为什么失败 —— 等于瞎猜。Python 版保证日志一定落盘。
 
 name: 资产搬进 git 目录
 
@@ -49,11 +47,6 @@ on:
           - ruby
           - cpp
           - all
-      also_publish:
-        description: '同时保留为 Release 资产（兼容旧 BASE）'
-        required: false
-        default: true
-        type: boolean
 
 jobs:
   mirror:
@@ -62,98 +55,14 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v5
-        with:
-          # 大文件进来后仓库会变大，浅克隆没意义（要提交就不可能浅）
-          fetch-depth: 1
 
-      - name: 从 Release 取回并放进 git 目录
+      - name: 搬
+        id: mirror
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET: ${{ github.event.inputs.target }}
-        run: |
-          set -uo pipefail
-          mkdir -p rt _diag
-
-          case "$TARGET" in
-            sqlite)  FILES="sql-wasm.js sql-wasm.wasm" ;;
-            lua)     FILES="fengari-web.js lua.js lua.wasm" ;;
-            quickjs) FILES="quickjs.js quickjs.wasm" ;;
-            pyodide) FILES="pyodide.js pyodide.asm.wasm python_stdlib.zip" ;;
-            php)     FILES="php-web.js php-web.js.wasm php-web.mjs php-web.mjs.wasm" ;;
-            ruby)    FILES="ruby-wasi.js ruby+stdlib.wasm" ;;
-            cpp)     FILES="cpp-index.js clang.js lld.js wasi-shim.js lld.wasm sysroot.tar clang.wasm" ;;
-            all)     FILES="sql-wasm.js sql-wasm.wasm fengari-web.js lua.js lua.wasm quickjs.js quickjs.wasm pyodide.js pyodide.asm.wasm python_stdlib.zip php-web.js php-web.js.wasm php-web.mjs php-web.mjs.wasm ruby-wasi.js ruby+stdlib.wasm cpp-index.js clang.js lld.js wasi-shim.js lld.wasm sysroot.tar clang.wasm" ;;
-            *) echo "未知 target: $TARGET"; exit 1 ;;
-          esac
-
-          # 期望体积：拿不到就说明 Release 里没有这个文件，不要静默跳过
-          gh api repos/liuyiming2024/assets/releases/latest \
-             --jq '.assets[] | "\(.name)\t\(.size)"' > /tmp/list.tsv
-          echo "Release 资产数：$(wc -l < /tmp/list.tsv)" | tee _diag/mirror.log
-
-          ok=0; skip=0; fail=0
-          for f in $FILES; do
-            want=$(grep -P "^${f}\t" /tmp/list.tsv | cut -f2 || true)
-            if [ -z "$want" ]; then
-              echo "  ⚠ $f 不在 Release 清单里" | tee -a _diag/mirror.log
-              fail=$((fail+1)); continue
-            fi
-            # 已存在且体积一致就跳过 —— 重跑不必再下几十 MB
-            if [ -f "rt/$f" ] && [ "$(stat -c%s "rt/$f")" = "$want" ]; then
-              echo "  ⏭ $f 已存在（$want 字节）" | tee -a _diag/mirror.log
-              skip=$((skip+1)); continue
-            fi
-            echo "  ⬇ $f（期望 $want 字节）" | tee -a _diag/mirror.log
-            if gh release download latest --repo liuyiming2024/assets \
-                 --pattern "$f" --dir rt --clobber 2>>_diag/mirror.log; then
-              if [ -f "rt/$f" ]; then
-                got=$(stat -c%s "rt/$f")
-                if [ "$got" = "$want" ]; then
-                  echo "     ✅ $got 字节，体积一致" | tee -a _diag/mirror.log
-                  ok=$((ok+1))
-                else
-                  echo "     ❌ 体积不符：实得 $got，期望 $want" | tee -a _diag/mirror.log
-                  fail=$((fail+1))
-                fi
-              else
-                echo "     ❌ 命令成功但文件不在" | tee -a _diag/mirror.log; fail=$((fail+1))
-              fi
-            else
-              echo "     ❌ 下载失败" | tee -a _diag/mirror.log; fail=$((fail+1))
-            fi
-          done
-
-          echo "" | tee -a _diag/mirror.log
-          echo "下载 $ok，跳过 $skip，失败 $fail" | tee -a _diag/mirror.log
-          if [ "$fail" -gt 0 ] && [ "$ok" -eq 0 ] && [ "$skip" -eq 0 ]; then
-            echo "::error::全部失败"
-            exit 1
-          fi
-
-      # 清单：前端用它做完整性校验（续传把多次数据拼起来，必须能验）
-      - name: 生成清单
-        run: |
-          set -uo pipefail
-          {
-            echo "{"
-            echo "  \"updated\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\","
-            echo "  \"files\": {"
-            first=1
-            for f in rt/*; do
-              [ -f "$f" ] || continue
-              n=$(basename "$f")
-              s=$(stat -c%s "$f")
-              h=$(sha256sum "$f" | cut -d' ' -f1)
-              [ $first -eq 1 ] || echo ","
-              printf '    "%s": { "size": %s, "sha256": "%s" }' "$n" "$s" "$h"
-              first=0
-            done
-            [ $first -eq 1 ] || echo ""
-            echo "  }"
-            echo "}"
-          } > rt/manifest.json
-          echo "--- rt/ 内容 ---" | tee -a _diag/mirror.log
-          ls -la rt/ | tee -a _diag/mirror.log
+        run: python3 scripts/mirror_assets.py
 
       - name: 提交
         run: |
@@ -168,13 +77,8 @@ jobs:
             git push origin main
           fi
 
-      # 沙箱读不到 Actions 日志正文，只能靠把输出推回仓库。
-      - name: 日志写回
-        if: always()
-        continue-on-error: true
+      - name: 结论
+        if: steps.mirror.outcome == 'failure'
         run: |
-          git config user.name "asset-mirror"
-          git config user.email "actions@users.noreply.github.com"
-          git add -f _diag
-          git diff --cached --quiet || git commit -m "诊断日志（${{ github.event.inputs.target }}）"
-          git push origin main 2>/dev/null || true
+          echo "::error::搬运失败，详见 _diag/mirror.log"
+          exit 1
