@@ -1,23 +1,25 @@
-target = pyodide，共 3 个文件
+target = php，共 4 个文件
 
 --- 取期望值（来自 Code 的 api/runtimes.json）---
 清单里有 21 个文件的期望值
 
 --- 下载 ---
-  ⬇ pyodide.js           期望 14767 字节
-     ✅ 14767 字节，SHA-256 一致
-  ⬇ pyodide.asm.wasm     期望 10087885 字节
-     ✅ 10087885 字节，SHA-256 一致
-  ⬇ python_stdlib.zip    期望 2341761 字节
-     ✅ 2341761 字节，SHA-256 一致
+  ⬇ php-web.js           期望 201403 字节
+     ✅ 201403 字节，SHA-256 一致
+  ⬇ php-web.js.wasm      期望 17289452 字节
+     ✅ 17289452 字节，SHA-256 一致
+  ⚠ php-web.mjs          清单里没有它的期望值
+  ⚠ php-web.mjs.wasm     清单里没有它的期望值
 
-下载 3，跳过 0，失败 0
+下载 2，跳过 0，失败 2
 
 --- 生成清单 ---
   fengari-web.js               219632  fbea0ee4b2e38840…
   lua.js                       213536  6b2d4e3a31335210…
   lua.wasm                    1255815  d97c1a48364c4b4d…
-  manifest.json                  1114  c10d58565f3df154…
+  manifest.json                  1526  657826f855197d74…
+  php-web.js                   201403  7060816720df1f84…
+  php-web.js.wasm            17289452  e4f660ed9a028801…
   pyodide.asm.wasm           10087885  8f631d8453672664…
   pyodide.js                    14767  037907919d58ac79…
   python_stdlib.zip           2341761  0dd443755a0244ae…
