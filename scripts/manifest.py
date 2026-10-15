@@ -47,6 +47,15 @@ def main():
     open('manifest.json', 'w', encoding='utf-8').write(
         json.dumps(man, ensure_ascii=False, indent=2))
     print('  清单已生成：%d 个文件' % len(items))
+
+    # 清单变了，聚合 LICENSE 必须跟着变（总规划的合规底线）。
+    # 新增组件后只更新 manifest 却忘了 LICENSE，等于那个组件的版权没人认领。
+    lp = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gen_license.py')
+    if os.path.exists(lp):
+        import subprocess
+        r = subprocess.call([sys.executable, lp])
+        if r != 0:
+            print('  ⚠ LICENSE 生成有未登记归属的组件，请补登记')
     return 0
 
 
