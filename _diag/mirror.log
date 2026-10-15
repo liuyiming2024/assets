@@ -1,0 +1,75 @@
+target = all，共 23 个文件
+
+--- 取期望值（来自 Code 的 api/runtimes.json）---
+清单里有 21 个文件的期望值
+
+--- 下载 ---
+  ⬇ sql-wasm.js          期望 48788 字节
+     ✅ 48788 字节，SHA-256 一致
+  ⬇ sql-wasm.wasm        期望 659806 字节
+     ✅ 659806 字节，SHA-256 一致
+  ⬇ fengari-web.js       期望 219632 字节
+     ✅ 219632 字节，SHA-256 一致
+  ⬇ lua.js               期望 213536 字节
+     ✅ 213536 字节，SHA-256 一致
+  ⬇ lua.wasm             期望 1255815 字节
+     ✅ 1255815 字节，SHA-256 一致
+  ⬇ quickjs.js           期望 7850 字节
+     ✅ 7850 字节，SHA-256 一致
+  ⬇ quickjs.wasm         期望 503134 字节
+     ✅ 503134 字节，SHA-256 一致
+  ⬇ pyodide.js           期望 14767 字节
+     ✅ 14767 字节，SHA-256 一致
+  ⬇ pyodide.asm.wasm     期望 10087885 字节
+     ✅ 10087885 字节，SHA-256 一致
+  ⬇ python_stdlib.zip    期望 2341761 字节
+     ✅ 2341761 字节，SHA-256 一致
+  ⬇ php-web.js           期望 201403 字节
+     ✅ 201403 字节，SHA-256 一致
+  ⬇ php-web.js.wasm      期望 17289452 字节
+     ✅ 17289452 字节，SHA-256 一致
+  ⚠ php-web.mjs          清单里没有它的期望值
+  ⚠ php-web.mjs.wasm     清单里没有它的期望值
+  ⬇ ruby-wasi.js         期望 23816 字节
+     ✅ 23816 字节，SHA-256 一致
+  ⬇ ruby+stdlib.wasm     期望 35204534 字节
+     ✅ 35204534 字节，SHA-256 一致
+  ⬇ cpp-index.js         期望 5296 字节
+     ✅ 5296 字节，SHA-256 一致
+  ⬇ clang.js             期望 74193 字节
+     ✅ 74193 字节，SHA-256 一致
+  ⬇ lld.js               期望 71604 字节
+     ✅ 71604 字节，SHA-256 一致
+  ⬇ wasi-shim.js         期望 27970 字节
+     ✅ 27970 字节，SHA-256 一致
+  ⬇ lld.wasm             期望 23202572 字节
+     ✅ 23202572 字节，SHA-256 一致
+  ⬇ sysroot.tar          期望 28620800 字节
+     ✅ 28620800 字节，SHA-256 一致
+  ⬇ clang.wasm           期望 42553880 字节
+     ✅ 42553880 字节，SHA-256 一致
+
+下载 21，跳过 0，失败 2
+
+--- 生成清单 ---
+  clang.js                      74193  27aeadfcdb71f37f…
+  clang.wasm                 42553880  d574339640a97645…
+  cpp-index.js                   5296  0265e7fccbf29fac…
+  fengari-web.js               219632  fbea0ee4b2e38840…
+  lld.js                        71604  b5054c24942687c7…
+  lld.wasm                   23202572  810bb3be4eec8ad6…
+  lua.js                       213536  6b2d4e3a31335210…
+  lua.wasm                    1255815  d97c1a48364c4b4d…
+  php-web.js                   201403  7060816720df1f84…
+  php-web.js.wasm            17289452  e4f660ed9a028801…
+  pyodide.asm.wasm           10087885  8f631d8453672664…
+  pyodide.js                    14767  037907919d58ac79…
+  python_stdlib.zip           2341761  0dd443755a0244ae…
+  quickjs.js                     7850  74991fd063dceb15…
+  quickjs.wasm                 503134  105c3bed22d457e4…
+  ruby+stdlib.wasm           35204534  1d8aea2daa127d73…
+  ruby-wasi.js                  23816  b6c0e3ffad5ea5e4…
+  sql-wasm.js                   48788  694ca5b36aa3e6e7…
+  sql-wasm.wasm                659806  0734155c83e49398…
+  sysroot.tar                28620800  dbed83f93f0fa695…
+  wasi-shim.js                  27970  01b030aa585df3f4…
