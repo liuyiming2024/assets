@@ -1,3 +1,8 @@
 # 抓下来的文件不进 git —— 二进制只增不减，clone 会越来越慢。
 # 它们发到 Release 资产里，不进版本历史。
 dist/
+
+# 诊断日志由 scripts/diag.py 写回，属一次性产物，不该常驻仓库
+_log.txt
+_diag/
+*.log

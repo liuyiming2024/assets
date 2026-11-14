@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """生成 manifest.json —— 客户端据此知道有哪些资源、多大、怎么下。
 
+增量合并，不覆盖：每次 workflow 只抓一类资源，清单必须保留其余资源。
+
 ⚠ 硬约束：url 必须是**文件直链**，不能是网页地址。
   网页地址会下到 HTML，文件不到 1KB 却"成功了" —— 这种假成功最难查。
   GitHub 的 release 直链形如 releases/latest/download/xxx.wasm，本身就是文件。
@@ -32,6 +34,23 @@ def main():
     for it in items:
         it['url'] = base + it['name']          # 文件直链，不是网页地址
         it.pop('src', None)
+
+    # ⚠ 原来是「本次抓到什么就写什么」，直接整份覆盖 manifest.json。
+    #   于是抓一次 lua，清单里就只剩 3 个 lua 文件 —— 之前发布的
+    #   C++ / Python / PHP / Ruby 等资源在清单里凭空消失，客户端
+    #   按清单找文件会以为它们没发布过（README 却写着 18 个全已发布）。
+    #   改成按 name 合并：本次抓到的覆盖同名旧项，其余条目原样保留。
+    merged = {}
+    try:
+        old = json.load(open('manifest.json', encoding='utf-8'))
+        for it in old.get('files', []):
+            if it.get('name') and it.get('url', '').startswith(base):
+                merged[it['name']] = it
+    except (OSError, ValueError):
+        pass
+    for it in items:
+        merged[it['name']] = it
+    items = [merged[k] for k in sorted(merged)]
 
     man = {
         'updated': datetime.date.today().isoformat(),

@@ -25,7 +25,9 @@
 https://github.com/liuyiming2024/assets/releases/latest/download/<文件名>
 ```
 
-清单在 `manifest.json`，列了每个文件的大小、SHA-256 与许可证。
+清单在 `manifest.json`，列了每个文件的大小、SHA-256 与文件直链。
+`rt/manifest.json` 是抓取产物的完整校验表（只有 size / sha256），
+是 `scripts/manifest.py` 的输入之一，**不是**对外的下载清单。
 
 ## 怎么更新
 
@@ -89,7 +91,8 @@ wasi.start(inst);
 | php-web.mjs.wasm | 16.5 MB | Apache-2.0 | Zend 引擎本体 |
 | ruby+stdlib.wasm | 33.6 MB | MIT | CRuby 3.3 + 标准库 |
 
-**合计 18 个文件、154.7 MB，全部已发布。**
+**上表列的是大体积资源。** 完整清单以 `manifest.json` 的 `files` 为准，
+共 21 项（含各运行时的胶水 JS），每项都带 `size` / `sha256` / 文件直链。
 
 详细的运行时资料（含各语言对比与接入顺序）在
 https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
@@ -122,3 +125,11 @@ https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
    而且失败得很隐蔽 —— 先 `mkdir -p dist`。
 
 所以：每个资源配**多个候选地址**，抓完校验**大小**（小于 1KB 视为错误页）。
+
+
+## 诊断日志不入库
+
+`fetch.yml` 的「日志写回」会把本次抓取/发布输出写成文件推回仓库，
+方便排查 Actions 里的失败。这些是一次性产物：仓库里曾经留下的
+`_log.txt`、`_diag/mirror.log` 已删除，`.gitignore` 也已忽略它们。
+需要看日志请去对应 Actions run 或该次提交，不要在仓库根目录堆历史日志。
