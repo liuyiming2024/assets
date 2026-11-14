@@ -99,7 +99,11 @@ https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
 
 ## 两条硬约束
 
-1. **只发 Release，不提交进 git。** 二进制进 git 就再也删不干净了。
+1. **大体积资源默认只发 Release，不提交进 git。** 二进制进 git
+   就再也删不干净了。例外是 `sync-to-git.yml`：浏览器 Worker 用 `fetch`
+   取 Release 直链会被 CORS 挡（下载端点不带 `Access-Control-Allow-Origin`），
+   所以按需把资源搬一份进 `rt/`，从 `raw.githubusercontent.com` 取。
+   这条取舍写在那个 workflow 的注释里，不是偷偷破坏约束。
 2. **清单里的地址必须是文件直链。** 网页地址会下到 HTML，
    文件不到 1KB 却显示"成功" —— 这种假成功最难查。
 
@@ -132,6 +136,11 @@ https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
 `fetch.yml` 成功时只把 `manifest.json` 与聚合 `LICENSE` 写回仓库；
 失败时额外由 `scripts/diag.py` 写一份 `_diag/last-run.txt`，
 **固定路径、覆盖式**，仓库里永远只留最后一次失败，不会越堆越多。
+
+另一个固定文件是 `_diag/mirror.log`，由 `scripts/mirror_assets.py`
+（「资产搬进 git 目录」workflow）覆盖写入，记录最近一次搬运。
+`sync-to-git.yml` 只 `git add` 这一个诊断文件，不再 `-f` 整个 `_diag/`
+—— 那样会绕过上面的 `.gitignore`，把日志整目录塞回仓库。
 
 成功那次的输出没有留存价值 —— 早期每次抓取都写一份 `_log.txt`，
 根目录堆了一堆一次性日志，2026-11 已清理。要看成功时的输出，

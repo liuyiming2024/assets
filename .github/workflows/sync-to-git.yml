@@ -69,7 +69,12 @@ jobs:
           set -uo pipefail
           git config user.name "asset-mirror"
           git config user.email "actions@users.noreply.github.com"
-          git add -f rt _diag
+          # 只跟踪需要入库的东西。原来写的是 `git add -f rt _diag`：
+          #   -f 会强制绕过 .gitignore，把 _diag/ 下的诊断日志整目录提交，
+          #   正好和第二轮「诊断日志不入库」的 .gitignore 对着干。
+          # mirror.log 是 mirror_assets.py 覆盖写的固定文件（只留最后一次），
+          # 单独放行它一个，其余 _diag/* 继续忽略。
+          git add -f rt _diag/mirror.log
           if git diff --cached --quiet; then
             echo "（无变化）"
           else

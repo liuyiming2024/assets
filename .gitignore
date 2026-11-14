@@ -2,10 +2,12 @@
 # 它们发到 Release 资产里，不进版本历史。
 dist/
 
-# 一次性诊断产物不入库。
-# 例外：_diag/last-run.txt 是 scripts/diag.py 写回的「最近一次失败」，
-# 固定路径、覆盖式，仓库里永远只留一份，便于外部直接读。
+# 一次性诊断产物不入库。只有两个固定路径、覆盖式的文件例外：
+#   _diag/last-run.txt —— scripts/diag.py  写回的「最近一次抓取失败」
+#   _diag/mirror.log   —— mirror_assets.py 写回的「最近一次搬运」
+# 两者都是「只留最后一次」，不会越堆越多；其余 _diag/* 与 *.log 忽略。
 _log.txt
 _diag/*
 !_diag/last-run.txt
+!_diag/mirror.log
 *.log
