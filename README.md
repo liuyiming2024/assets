@@ -79,7 +79,7 @@ wasi.start(inst);
 
 | 资源 | 体积 | 许可证 | 说明 |
 | --- | --- | --- | --- |
-| php-web.mjs | 0.0 MB | Apache-2.0 | PHP 运行时加载器 |
+| php-web.js | 0.2 MB | Apache-2.0 | PHP 运行时加载器 |
 | pyodide.js | 0.0 MB | MPL-2.0 | Pyodide 加载器 |
 | sql-wasm.js | 0.0 MB | MIT | sql.js 的 JS 包装 |
 | lua.js | 0.2 MB | MIT | Wasmley 胶水代码 |
@@ -88,7 +88,7 @@ wasi.start(inst);
 | lua.wasm | 1.2 MB | MIT | 官方 PUC-Rio Lua 5.4 |
 | python_stdlib.zip | 2.2 MB | MPL-2.0 | Python 标准库 |
 | **pyodide.asm.wasm** | **9.6 MB** | MPL-2.0 | **CPython 核心** |
-| php-web.mjs.wasm | 16.5 MB | Apache-2.0 | Zend 引擎本体 |
+| php-web.js.wasm | 16.5 MB | Apache-2.0 | Zend 引擎本体 |
 | ruby+stdlib.wasm | 33.6 MB | MIT | CRuby 3.3 + 标准库 |
 
 **上表列的是大体积资源。** 完整清单以 `manifest.json` 的 `files` 为准，
@@ -127,9 +127,12 @@ https://github.com/liuyiming2024/Code/blob/main/docs/runtimes.md
 所以：每个资源配**多个候选地址**，抓完校验**大小**（小于 1KB 视为错误页）。
 
 
-## 诊断日志不入库
+## 诊断日志怎么留
 
-`fetch.yml` 的「日志写回」会把本次抓取/发布输出写成文件推回仓库，
-方便排查 Actions 里的失败。这些是一次性产物：仓库里曾经留下的
-`_log.txt`、`_diag/mirror.log` 已删除，`.gitignore` 也已忽略它们。
-需要看日志请去对应 Actions run 或该次提交，不要在仓库根目录堆历史日志。
+`fetch.yml` 成功时只把 `manifest.json` 与聚合 `LICENSE` 写回仓库；
+失败时额外由 `scripts/diag.py` 写一份 `_diag/last-run.txt`，
+**固定路径、覆盖式**，仓库里永远只留最后一次失败，不会越堆越多。
+
+成功那次的输出没有留存价值 —— 早期每次抓取都写一份 `_log.txt`，
+根目录堆了一堆一次性日志，2026-11 已清理。要看成功时的输出，
+去对应 Actions run 的日志即可。

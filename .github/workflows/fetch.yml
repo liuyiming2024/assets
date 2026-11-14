@@ -64,11 +64,21 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 scripts/manifest.py --repo "${{ github.repository }}" --dir dist
 
-      # 日志写回：沙箱下载不到 Actions 的产物，只能把关键输出写成文件推回仓库。
-      # 用独立脚本而不是内联 heredoc —— 嵌套缩进稍错就静默不执行。
-      # 诊断步骤永远不影响 job 结论。
-      - name: 日志写回
-        if: always()
+      # 清单与聚合许可证写回（只在成功时）。manifest.py 末尾会重生成
+      # LICENSE，两者必须一起写回，否则新增组件的版权声明没人认领。
+      - name: 清单与许可证写回
+        if: success()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET: ${{ github.event.inputs.target }}
+        run: python3 scripts/diag.py dist --manifest-only
+
+      # 失败诊断日志：成功那次的输出没有留存价值。早期每跑一次抓取就往
+      # 根目录写一份 _log.txt，堆了一堆一次性日志（2026-11 清理过一轮）。
+      # 现在失败时才写，且固定路径覆盖，仓库里永远只留最后一次。
+      - name: 失败诊断日志写回
+        if: failure()
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
